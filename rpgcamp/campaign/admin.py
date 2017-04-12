@@ -1,3 +1,9 @@
 from django.contrib import admin
+from campaign.models import Campaign, CampaignUser
 
-# Register your models here.
+class CampaignAdmin(admin.ModelAdmin):
+    exclude = ('slug',)
+
+
+admin.site.register(Campaign,CampaignAdmin)
+admin.site.register(CampaignUser)
