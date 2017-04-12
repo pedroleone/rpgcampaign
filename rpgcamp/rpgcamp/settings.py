@@ -25,7 +25,7 @@ SECRET_KEY = 'm2t(q6g-d_is4*arpj^6p_gqnb=y12@bv_99(94$b&8vp302u_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['rpgcamp.pythonanywhere.com']
+ALLOWED_HOSTS = ['rpgcamp.pythonanywhere.com','127.0.0.1']
 
 
 # Application definition
@@ -120,7 +120,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-MEDIA_ROOT = '/home/rpgcamp/rpgcamp/media'
-MEDIA_URL = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = '/media/'
+MEDIA_URL = os.path.join(BASE_DIR, "media/")
 
 
