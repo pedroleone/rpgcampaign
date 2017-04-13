@@ -13,16 +13,27 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 
 <style>
-body { 
-font-family: 'Libre Baskerville', serif;
-  background: url(/static/img/bg.jpg) no-repeat center center cover no-repeat fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  
 
+
+body, html {
+    font-family: 'Libre Baskerville', serif;
+    height: 100%;
+    margin: 0;
 }
+
+.bg {
+    /* The image used */
+    background-image: url(/static/img/bg.jpg);
+
+    /* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 
 h1 {
     font-family: 'Roboto', sans-serif;
@@ -84,6 +95,8 @@ h2,h3,h4,h5 {
 
 
 <body>
+  <div class="bg"></div>
+
     <nav class="navbar navbar-inverse">
       <div class="container">
         <div class="navbar-header">
