@@ -12,6 +12,7 @@ class Campaign(models.Model):
     description = models.TextField(blank=True)
     slug = models.SlugField(unique=True)
     date_created = models.DateField(auto_now_add=True)
+    private = models.BooleanField(default=False)    
 
     def save(self, *args, **kwargs):
         slug = slugify(self.name)

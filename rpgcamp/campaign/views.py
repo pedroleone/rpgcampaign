@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from campaign.forms import CampaignForm
 from campaign.models import Campaign, CampaignUser
@@ -25,3 +25,16 @@ def create_campaign(request):
     context = {'form': form}
     return render(request, 'campaign/create_campaign.html', context)
     
+@login_required(login_url='/login/')
+def view_campaign(request, slug):
+    context = {}
+
+    campaign = get_object_or_404(Campaign, slug=slug)
+    if campaign.private is True:
+        permission = CampaignUser.objects.filter(campaign=campaign, user=request.user)
+        if not permission:
+            return render(request, 'campaign_denied.html', context=context)
+
+    context['campaign'] = campaign
+
+    return render(request, 'campaign.html', context=context)

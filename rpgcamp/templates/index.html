@@ -17,7 +17,7 @@
           <h2>{{ campaign.campaign.name }}</h2>
           <p>{{ campaign.campaign.description }}</p>
           <p><strong>Sistema:</strong>{{ campaign.campaign.system }}</p>
-          <p><a class="btn btn-default" href="#" role="button">Acessar Campanha &raquo;</a></p>
+          <p><a class="btn btn-default" href="{% url 'view_campaign' campaign.campaign.slug %}" role="button">Acessar Campanha &raquo;</a></p>
         </div>
 
 {% endfor %}

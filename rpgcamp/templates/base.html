@@ -69,20 +69,7 @@ h2,h3,h4,h5 {
     margin-left: 10px !important;
 }
 
-
-
-
-
-
-
-
-
-
 </style>
-
-
-
-
 
 <body>
     <nav class="navbar navbar-inverse">
@@ -94,7 +81,7 @@ h2,h3,h4,h5 {
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">RPGCamp</a>
+          <a class="navbar-brand" href="/">RPGCamp</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -112,26 +99,10 @@ h2,h3,h4,h5 {
               </ul>
             </li>
 
-            <li class="dropdown hidden-lg hidden-md">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu Geral<span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                
-                <li><a href="#">Jogadores</a></li>
-                <li><a href="#">Personagens</a></li>
-                <li><a href="#">NPCs</a></li>
-                <li><a href="#">Missões</a></li>
-                <li><a href="#">Citações</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Marcar Nova Sessão</a></li>
-                <li><a href="#">Remarcar Sessão</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Diário de Sessões</a></li>
-                <li><a href="#">Histórico</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">House Rules</a></li>
-                <li><a href="#">Utilidades</a></li>
-              </ul>
-            </li>
+            {% block specific_menu %}
+            {% endblock %}
+
+
             {% endif %}
             
           </ul>
