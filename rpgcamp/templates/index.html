@@ -1,26 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>RPG Campaign Management</h1>
-<div>
-{% if request.user.is_authenticated %}Welcome {{ request.user.username}}. <br>
-<a href="{% url 'logout'%}">Logout</a> <a href="{% url 'password_change' %}">Change Password</a><br>
-<a href="{% url 'create_campaign' %}">Create Campaign</a>
-{% if campaign_list %}
-<h1>Campaign List</h1>
-{% for campaign in campaign_list %}
+        <div class="row">
+        <div class="col-md-12"><h1>RPGCamp</h1></div>
+        </div>
 
-Campaign Name: {{ campaign.campaign.name }} <br>
-Campaign System: {{ campaign.campaign.system }} <br>
-Campaign Description: {{ campaign.campaign.description }} <br>
-Maximum Players: {{ campaign.campaign.maximum_players }} <br>
-Slug: {{ campaign.campaign.slug }} <br>
-Permission: {{ campaign.get_permission_display }} <br>
+      <div class="row">
+        <div class="col-xs-12">
+          <h2>Heading</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+        </div>
+      </div>
 
-{% endfor %}
-{% endif %}
+        <div class="col-xs-offset-1 col-xs-10">
+          <h2>Campanha XPTO</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <p><a class="btn btn-default" href="#" role="button">Acessar Campanha &raquo;</a></p>
+        </div>
 
-{% else %}
-You are not logged in. Please login or create an account<br>
-<a href="{% url 'login'%}">Login</a> <a href="{% url 'add_user'%}">Create Account</a>
-{%endif%}
-{% endblock %}
+        <div class="col-xs-offset-1 col-xs-10">
+          <h2>Campanha CDEF</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <p><a class="btn btn-default" href="#" role="button">Acessar Campanha &raquo;</a></p>
+        </div>
+
+        <div class="col-xs-offset-1 col-xs-10">
+          <h2>Criar Nova Campanha</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <p><a class="btn btn-success" href="#" role="button"><span class="glyphicon glyphicon-plus-sign
+"> </span> Criar Campanha &raquo;</a></p>
+        </div>
+
+      </div>
+{% endblock %}      
+
