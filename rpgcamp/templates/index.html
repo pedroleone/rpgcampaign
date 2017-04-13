@@ -28,13 +28,14 @@
 "> </span> Criar Campanha &raquo;</a></p>
         </div>
 {% else %}
+  {% if request.user.is_authenticated %}
         <div class="col-xs-offset-1 col-xs-10">
           <h2>Criar Nova Campanha</h2>
           <p>Parece que você não tem nenhuma campanha cadastrada. Clique no botão abaixo e crie uma campanha para ter acesso à todos os recursos do RPGCamp.</p>
           <p><a class="btn btn-success" href="{% url 'create_campaign' %}" role="button"><span class="glyphicon glyphicon-plus-sign
 "> </span> Criar Campanha &raquo;</a></p>
         </div>
-
+{% endif %}
 {% endif %}
 
 
