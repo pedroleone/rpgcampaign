@@ -4,15 +4,22 @@ from campaign.forms import CampaignForm
 from campaign.models import Campaign, CampaignUser
 from django.contrib.auth.decorators import login_required
 
-def index(request):
-    context = {}
+def get_campaigns(request):
     if request.user.is_authenticated:
         campaign_list = CampaignUser.objects.filter(user=request.user)
-        context['campaign_list'] = campaign_list
+    return campaign_list
+    
+
+
+def index(request):
+    context = { 'campaign_list': get_campaigns(request) }
+    
     return render(request, 'index.html', context=context)
 
 @login_required(login_url='/login/')
 def create_campaign(request):
+    context = { 'campaign_list': get_campaigns(request) }
+
     if request.method == "POST":
         form = CampaignForm(request.POST)
         if form.is_valid():
@@ -22,12 +29,11 @@ def create_campaign(request):
             return HttpResponseRedirect('/')
     else:
         form = CampaignForm()
-    context = {'form': form}
+    context['form'] = form
     return render(request, 'campaign/create_campaign.html', context)
     
-@login_required(login_url='/login/')
 def view_campaign(request, slug):
-    context = {}
+    context = { 'campaign_list': get_campaigns(request) }
 
     campaign = get_object_or_404(Campaign, slug=slug)
     if campaign.private is True:
