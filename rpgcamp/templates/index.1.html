@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>RPG Campaign Management</h1>
+<div>
+{% if request.user.is_authenticated %}Welcome {{ request.user.username}}. <br>
+<a href="{% url 'logout'%}">Logout</a> <a href="{% url 'password_change' %}">Change Password</a><br>
+<a href="{% url 'create_campaign' %}">Create Campaign</a>
+{% if campaign_list %}
+<h1>Campaign List</h1>
+{% for campaign in campaign_list %}
+
+Campaign Name: {{ campaign.campaign.name }} <br>
+Campaign System: {{ campaign.campaign.system }} <br>
+Campaign Description: {{ campaign.campaign.description }} <br>
+Slug: {{ campaign.campaign.slug }} <br>
+Permission: {{ campaign.get_permission_display }} <br>
+
+{% endfor %}
+{% endif %}
+
+{% else %}
+You are not logged in. Please login or create an account<br>
+<a href="{% url 'login'%}">Login</a> <a href="{% url 'add_user'%}">Create Account</a>
+{%endif%}
+{% endblock %}
