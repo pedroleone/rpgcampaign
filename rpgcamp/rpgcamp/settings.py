@@ -125,9 +125,10 @@ USE_TZ = True
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL ='/media/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [STATIC_DIR, ]
 
 LOGIN_REDIRECT_URL = '/'
 
@@ -136,6 +137,4 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 RECAPTCHA_PUBLIC_KEY = '6Le48hwUAAAAAApqrlMp4lk3W62hZb1ig0phnBjl'
 RECAPTCHA_PRIVATE_KEY = '6Le48hwUAAAAAAQG4FSdbnAAXHTItZWjlQvg-qqP'
 
-STATICFILES_DIRS = (
-os.path.join(BASE_DIR, "media", "static"),
-)
+
