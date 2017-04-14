@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'crispy_forms',
-    
+    'captcha',
+
     'campaign.apps.CampaignConfig',    
     'users',
 ]
@@ -132,3 +133,5 @@ LOGIN_REDIRECT_URL = '/'
 
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+RECAPTCHA_PUBLIC_KEY = '6Le48hwUAAAAAApqrlMp4lk3W62hZb1ig0phnBjl'
+RECAPTCHA_PRIVATE_KEY = '6Le48hwUAAAAAAQG4FSdbnAAXHTItZWjlQvg-qqP'

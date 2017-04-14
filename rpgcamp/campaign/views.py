@@ -6,14 +6,15 @@ from django.contrib.auth.decorators import login_required
 
 def get_campaigns(request):
     if request.user.is_authenticated:
-        campaign_list = CampaignUser.objects.filter(user=request.user)
-    return campaign_list
+        return CampaignUser.objects.filter(user=request.user)
+        
     
 
 
 def index(request):
     context = { 'campaign_list': get_campaigns(request) }
     
+
     return render(request, 'index.html', context=context)
 
 @login_required(login_url='/login/')
