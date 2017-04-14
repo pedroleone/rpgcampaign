@@ -123,11 +123,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL ='/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
-MEDIA_ROOT = '/media/'
-MEDIA_URL = os.path.join(BASE_DIR, "media/")
 
 LOGIN_REDIRECT_URL = '/'
 
@@ -135,3 +135,7 @@ LOGIN_REDIRECT_URL = '/'
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 RECAPTCHA_PUBLIC_KEY = '6Le48hwUAAAAAApqrlMp4lk3W62hZb1ig0phnBjl'
 RECAPTCHA_PRIVATE_KEY = '6Le48hwUAAAAAAQG4FSdbnAAXHTItZWjlQvg-qqP'
+
+STATICFILES_DIRS = (
+os.path.join(BASE_DIR, "media", "static"),
+)
