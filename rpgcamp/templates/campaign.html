@@ -1,4 +1,6 @@
 {% extends "base_campaign.html" %}
+
+{% load staticfiles %}
 {% block content %}
         <div class="row">
         <div class="col-md-12"><h1>{{ campaign.name }}</h1></div>
@@ -9,16 +11,16 @@
 
 <ul>
   <li><a class="active" href="#home">Home</a></li>
-  <li><a data-toggle="collapse" href="#collapse-sessao">Sessões <span class="caret"></span></a></li>
+  <li><a data-toggle="collapse" href="#collapse-sessao"> <img src="{% static 'icons/calendar.svg' %}" height="24" width="24"> Sessões <span class="caret"></span></a></li>
 
       <ul id="collapse-sessao" class="collapse side-margin">
-        <li><a href="#">Marcar Nova Sessão</a></li>
-        <li><a href="#">Remarcar Sessão</a></li>
-        <li><a href="#">Diário de Sessões</a></li>
-        <li><a href="#">Histórico</a></li>
+        <li><a href="#"><img src="{% static 'icons/read.svg' %}" height="24" width="24"> Marcar Nova Sessão</a></li>
+        <li><a href="#"><img src="{% static 'icons/pocket-watch.svg' %}" height="24" width="24"> Remarcar Sessão</a></li>
+        <li><a href="#"><img src="{% static 'icons/white-book.svg' %}" height="24" width="24"> Diário de Sessões</a></li>
+        <li><a href="#"><img src="{% static 'icons/tied-scroll.svg' %}" height="24" width="24"> Histórico</a></li>
       </ul>
 
-    <li><a href="#">Jogadores</a></li>
+    <li><a href="#"><img src="{% static 'icons/minions.svg' %}" height="24" width="24"> Jogadores</a></li>
     <li><a href="#">Personagens</a></li>
     <li><a href="#">NPCs</a></li>
     <li><a href="#">Missões</a></li>
