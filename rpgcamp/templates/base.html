@@ -85,6 +85,41 @@ h2,h3,h4,h5 {
 
 }
 
+#login-dp{
+    min-width: 250px;
+    padding: 14px 14px 0;
+    overflow:hidden;
+    background-color:rgba(255,255,255,.8);
+}
+#login-dp .help-block{
+    font-size:12px    
+}
+#login-dp .bottom{
+    background-color:rgba(255,255,255,.8);
+    border-top:1px solid #ddd;
+    clear:both;
+    padding:14px;
+}
+#login-dp .social-buttons{
+    margin:12px 0    
+}
+#login-dp .social-buttons a{
+    width: 49%;
+}
+#login-dp .form-group {
+    margin-bottom: 10px;
+}
+@media(max-width:768px){
+    #login-dp{
+        background-color: inherit;
+        color: #fff;
+    }
+    #login-dp .bottom{
+        background-color: inherit;
+        border-top:0 none;
+    }
+}
+
 </style>
 
 <body>
@@ -101,7 +136,11 @@ h2,h3,h4,h5 {
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            
+
+
+
+
+
             {% if request.user.is_authenticated %}
             <li class="active"><a href="#">Início</a></li>
             <li class="dropdown">
@@ -120,6 +159,8 @@ h2,h3,h4,h5 {
               </ul>
             </li>
 
+
+
             {% block specific_menu %}
             {% endblock %}
 
@@ -130,11 +171,42 @@ h2,h3,h4,h5 {
           <ul class="nav navbar-nav navbar-right">
             <li> <p class="navbar-btn">
                 {% if request.user.is_authenticated %}
-                    <a href="{% url 'logout'%}" class="btn btn-default">Logout</a>
+                    <a href="#" class="btn btn-link"><span class="glyphicon glyphicon-user"></span></a>
+                    <a href="{% url 'logout'%}" class="btn btn-link"><span class="glyphicon glyphicon-log-out"> </span> </a>
+                    
                 {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-success">Login</a>
-                    <a href="{% url 'add_user' %}" class="btn btn-primary">Criar Usuário</a>
-                {% endif %}
+        <li class="dropdown"> <!-- login menu -->
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="glyphicon glyphicon-log-in"></span>  <b> Entrar</b> </a>
+			<ul id="login-dp" class="dropdown-menu">
+				<li>
+					 <div class="row">
+							<div class="col-md-12">
+                
+								 <form class="form" role="form" method="post" action="/login/" accept-charset="UTF-8" id="login-nav">
+										{% csrf_token %}
+                    <div class="form-group">
+                      <label for="id_username" class="control-label  requiredField">Usuário</label> 
+                      <div class="controls "> 
+                        <input type="text" name="username" required id="id_username" autofocus maxlength="254" class="textinput textInput form-control" /> </div>										
+                    </div>
+										<div class="form-group">
+                      <label for="id_password" class="control-label  requiredField"> Senha</label> 
+                      <div class="controls "> 
+                        <input type="password" name="password" id="id_password" required class="textinput textInput form-control" /> 
+                      </div>										
+                    </div>
+										<div class="form-group">
+											 <button type="submit" class="btn btn-primary btn-block">Fazer Login</button>
+										</div>
+								 </form>
+							</div>
+							<div class="bottom text-center">
+								Novo arqui ? <a href="{% url 'add_user' %}"><b>Crie Sua Conta</b></a>
+							</div>
+					 </div>
+				</li>
+			</ul>
+        </li>  <!-- end login menu -->                {% endif %}
                 </p>
             </li>
           </ul>
