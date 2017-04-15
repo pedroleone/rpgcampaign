@@ -13,8 +13,9 @@ def get_campaigns(request):
 
 def index(request):
     context = { 'campaign_list': get_campaigns(request) }
+    #user_info = request.user.profile
+    #context['user_info': user_info]
     
-
     return render(request, 'index.html', context=context)
 
 @login_required(login_url='/login/')

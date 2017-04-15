@@ -15,6 +15,8 @@ def add_user(request):
                                                 password=form.cleaned_data['password'] )
 
             login(request, new_user)
+            profile = Profile(user=request.user, display_name=request.user.username)
+            profile.save()
             return HttpResponseRedirect('/')
     else:
         form = UserForm()
