@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'crispy_forms',
     'captcha',
+    'imagekit',
 
     'campaign.apps.CampaignConfig',    
     'users',
