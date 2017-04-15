@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'style/sidebar.css' %}" >
+{% endblock %}      
+
 {% block specific_menu %}
             <li class="dropdown hidden-lg hidden-md">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu Geral<span class="caret"></span></a>
