@@ -20,8 +20,9 @@
           <h2>{{ campaign.campaign.name }}</h2>
           <p>{{ campaign.campaign.description }}</p>
           <p><strong>Sistema: </strong>{{ campaign.campaign.system }}</p>
-          <p><strong>DM: </strong>{{ campaign.user.profile.display_name }}</p>
-          <p><strong>DM: </strong>{{ campaign.campaign.dms }}</p>
+          
+          <p><strong>DM: </strong>{{ campaign.campaign.dms|join:", " }}</p>
+          <p><strong>Jogadores: </strong>{{ campaign.campaign.players|join:", " }}</p>
           
           <p><a class="btn btn-default" href="{% url 'view_campaign' campaign.campaign.slug %}" role="button">Acessar Campanha &raquo;</a></p>
         </div>

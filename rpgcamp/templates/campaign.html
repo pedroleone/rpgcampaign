@@ -31,9 +31,14 @@
 </ul>
         </div>
         <div class="col-sm-9">
-          <h2>Próxima Sessão</h2>
-          <p>Nesta parte ficará descrita quando vai ser a próxima sessão, quanto tempo falta, e quais jogadores confirmaram.</p>
-          
+          <div class="col-md-9 col-sm-12">
+            <h2>Próxima Sessão</h2>
+            <p>Nesta parte ficará descrita quando vai ser a próxima sessão, quanto tempo falta, e quais jogadores confirmaram.</p>
+          </div>
+          <div class="col-md-3 col-sm-12">
+            <p><strong>DM: </strong>{{ campaign.dms|join:", " }}</p>
+            <p><strong>Jogadores: </strong>{{ campaign.players|join:", " }}</p>
+          </div>
         </div>
       </div>
 {% endblock %}
