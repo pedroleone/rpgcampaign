@@ -36,7 +36,7 @@ class Campaign(models.Model):
         players_list = []
         players = CampaignUser.objects.filter(campaign=self, permission=2)
         for player in players:
-            players_list.append(dm.user.profile.display_name)
+            players_list.append(player.user.profile.display_name)
         return players_list
 
     def __str__(self):

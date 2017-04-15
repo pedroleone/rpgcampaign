@@ -38,6 +38,7 @@
           <div class="col-md-3 col-sm-12">
             <p><strong>DM: </strong>{{ campaign.dms|join:", " }}</p>
             <p><strong>Jogadores: </strong>{{ campaign.players|join:", " }}</p>
+            <p><a href="{% url 'add_player' campaign.slug %}" class="btn btn-link">Adicionar novo jogador</a></p>
           </div>
         </div>
       </div>
