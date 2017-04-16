@@ -31,7 +31,8 @@ class Campaign(models.Model):
         for p in participants:
             participant_list.append({'display_name': p.user.profile.display_name, 
                             'username': p.user.username,
-                            'profile_pic': p.user.profile.get_profile_pic})
+                            'profile_pic': p.user.profile.get_profile_pic,
+                            'id': p.user.id})
         return participant_list
 
     def players(self):
@@ -40,7 +41,8 @@ class Campaign(models.Model):
         for p in participants:
             participant_list.append({'display_name': p.user.profile.display_name, 
                             'username': p.user.username,
-                            'profile_pic': p.user.profile.get_profile_pic})
+                            'profile_pic': p.user.profile.get_profile_pic,
+                            'id': p.user.id})
         return participant_list
 
     def __str__(self):

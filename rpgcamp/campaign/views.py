@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from campaign.forms import CampaignForm, AddUserForm
 from campaign.models import Campaign, CampaignUser
 from django.contrib.auth.decorators import login_required
-
+from django.urls import reverse
 
 def get_campaigns(request):
     if request.user.is_authenticated:
@@ -96,3 +96,14 @@ def players(request, slug):
     
     context['form'] = form
     return render(request, 'campaign/add_user_campaign.html', context=context)
+
+@login_required(login_url='/login/')
+def delete_player(request, slug):
+    campaign_id = request.POST.get('delete_campaign_id')
+    user_id = request.POST.get('delete_user_id')
+    
+
+    obj = CampaignUser.objects.get(user=user_id, campaign=campaign_id)
+    print(obj, user_id, campaign_id)
+    obj.delete()
+    return HttpResponseRedirect(reverse('players', args=[slug]))

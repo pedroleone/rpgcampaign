@@ -20,5 +20,4 @@ class Profile(models.Model):
         if not self.profile_pic:
             return '/static/img/blank_profile_pic.png'
         else:
-            print(self.profile_pic)
             return self.profile_pic.url
