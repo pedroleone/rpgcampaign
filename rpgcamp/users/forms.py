@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.forms import ModelForm
+from django.forms import ModelForm, PasswordInput
 from captcha.fields import ReCaptchaField
 from .models import Profile
 
@@ -10,6 +10,9 @@ class UserForm(ModelForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password')
+        widgets = {
+            'password': PasswordInput()
+        }
 
 class UserProfileForm(ModelForm):
     class Meta:

@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from users.forms import UserForm, UserProfileForm
 from django.contrib.auth import login 
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from .models import Profile
+
+from django.contrib.auth.decorators import login_required
+from campaign.views import get_campaigns
 
 def add_user(request):
     if request.method == "POST":
@@ -23,11 +26,14 @@ def add_user(request):
         
     return render(request, 'registration/add_user.html', {'form': form})
 
-def profile(request):
+@login_required(login_url='/login/')
+def edit_profile(request):
+    context = { 'campaign_list': get_campaigns(request) }
     try:
         initial_profile = Profile.objects.get(user=request.user)
     except:
         initial_profile = Profile(user=request.user, display_name=request.user.username)
+        initial_profile.save()
     print(initial_profile.display_name)
 
     if request.method == "POST":
@@ -38,8 +44,25 @@ def profile(request):
             profile.user = request.user
             profile.id = initial_profile.id
             profile.save()
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/profile/')
     else:
         form = UserProfileForm(instance=initial_profile)
-        
-    return render(request, 'profile.html', {'form': form})
+    context['form'] = form
+    return render(request, 'users/edit_self_profile.html', context)
+
+@login_required(login_url='/login/')
+def self_profile(request):
+    context = { 'campaign_list': get_campaigns(request) }
+    try:
+        profile = Profile.objects.get(user=request.user)
+    except:
+        profile = Profile(user=request.user, display_name=request.user.username)
+        profile.save()
+    context['profile'] = profile
+    return render(request, 'users/view_self_profile.html', context)
+
+def view_profile(request, username):
+    context = { 'campaign_list': get_campaigns(request) }
+    profile = get_object_or_404(Profile, user=username)
+    context['profile'] = profile
+    return render(request, 'users/view_profile.html', context)
