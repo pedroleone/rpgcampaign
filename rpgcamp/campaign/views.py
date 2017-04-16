@@ -54,6 +54,7 @@ def players(request, slug):
         campaign['add_user_permission'] = False
     else
         campaign['add_user_permission'] = True
+    
     context['campaign'] = campaign
 
     if request.method == "POST":
