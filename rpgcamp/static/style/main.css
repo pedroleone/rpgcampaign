@@ -1,14 +1,18 @@
 body { 
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Simonetta', cursive;
+  font-size: 2em;
+  font-weight: 500;
 }
 
+
+
 h1 {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Amarante', cursive;
     font-size: 50px;
 }
 
 h2,h3,h4,h5 {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Amarante', cursive;
 }
 
 .opaque {
@@ -69,11 +73,25 @@ h2,h3,h4,h5 {
 
 .campaign-list h2 {
     font-size: 40;
-    font-variant: small-caps;
-    font-weight: bolder;
+    
 
 }
 
 .campaign-list h3 {
     font-size: 40;
 }
+
+
+/* unvisited link */
+a:link, a:visited, a:active {
+    color: #023E5B;
+    text-decoration: none;
+}
+
+/* mouse over link */
+a:hover {
+    color: #052737;
+    text-decoration: none;
+
+}
+
