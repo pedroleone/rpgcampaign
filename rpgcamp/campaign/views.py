@@ -51,9 +51,9 @@ def players(request, slug):
     campaign = get_object_or_404(Campaign, slug=slug)
     permission = CampaignUser.objects.filter(campaign=campaign, user=request.user, permission=1)
     if not permission:
-        campaign['add_user_permission'] = False
+        context['add_user_permission'] = False
     else:
-        campaign['add_user_permission'] = True
+        context['add_user_permission'] = True
     
     context['campaign'] = campaign
 
