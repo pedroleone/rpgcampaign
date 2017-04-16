@@ -12,7 +12,6 @@ def add_user(request):
     if request.method == "POST":
         form = UserForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
             new_user = User.objects.create_user(username=form.cleaned_data['username'],
                                                 email=form.cleaned_data['email'],
                                                 password=form.cleaned_data['password'] )
@@ -40,7 +39,11 @@ def edit_profile(request):
         form = UserProfileForm(request.POST, request.FILES)
         form.user = request.user
         if form.is_valid():
+            print(form.cleaned_data)
             profile = form.save(commit=False)
+            if form.cleaned_data['profile_pic'] is None:
+                profile.profile_pic = initial_profile.profile_pic
+                print("no profile pic uploaded", profile.profile_pic)
             profile.user = request.user
             profile.id = initial_profile.id
             profile.save()
