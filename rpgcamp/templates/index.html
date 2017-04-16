@@ -18,9 +18,9 @@
 
         <div class="col-md-4 campaign-list">
           <h2><a href="{% url 'view_campaign' campaign.campaign.slug %}"> {{ campaign.campaign.name }} </a></h2>
+          <span class="label label-default">{{ campaign.campaign.system }}</span>
           <p>{{ campaign.campaign.description }}</p>
-          <p><strong>Sistema: </strong>{{ campaign.campaign.system }}</p>
-          <p><h3>DM</h3>
+          <p><h3>Mestre</h3>
             {% for p in campaign.campaign.dms %}    
               <a href="{% url 'view_profile' p.username %}">
                 {% if p.profile_pic %}  <img src="{{ p.profile_pic }}" height="30" width="30" class="img-circle"> {% endif %}

@@ -1,42 +1,14 @@
 {% extends "base_campaign.html" %}
 
 {% load staticfiles %}
-{% block content %}
-        <div class="row">
-        <div class="col-md-12"><h1>{{ campaign.name }}</h1></div>
-        </div>
+{% block campaign %}
 
-      <div class="row">
-        <div class="col-sm-3 hidden-sm hidden-xs sidemenu">
-
-<ul>
-  <li><a class="active" href="#home">Home</a></li>
-  <li><a data-toggle="collapse" href="#collapse-sessao"> <img src="{% static 'icons/calendar.svg' %}" height="24" width="24"> Sessões <span class="caret"></span></a></li>
-
-      <ul id="collapse-sessao" class="collapse side-margin">
-        <li><a href="#"><img src="{% static 'icons/read.svg' %}" height="24" width="24"> Marcar Nova Sessão</a></li>
-        <li><a href="#"><img src="{% static 'icons/pocket-watch.svg' %}" height="24" width="24"> Remarcar Sessão</a></li>
-        <li><a href="#"><img src="{% static 'icons/white-book.svg' %}" height="24" width="24"> Diário de Sessões</a></li>
-        <li><a href="#"><img src="{% static 'icons/tied-scroll.svg' %}" height="24" width="24"> Histórico</a></li>
-      </ul>
-
-    <li><a href="#"><img src="{% static 'icons/minions.svg' %}" height="24" width="24"> Jogadores</a></li>
-    <li><a href="#"><img src="{% static 'icons/brutal-helm.svg' %}" height="24" width="24"> Personagens</a></li>
-    <li><a href="#"><img src="{% static 'icons/farmer.svg' %}" height="24" width="24"> NPCs</a></li>
-    <li><a href="#"><img src="{% static 'icons/treasure-map.svg' %}" height="24" width="24"> Missões</a></li>
-    <li><a href="#"><img src="{% static 'icons/stabbed-note.svg' %}" height="24" width="24"> Citações</a></li>
-    <li><a href="#"><img src="{% static 'icons/dice-twenty-faces-twenty.svg' %}" height="24" width="24"> House Rules</a></li>
-    <li><a href="#"><img src="{% static 'icons/drink-me.svg' %}" height="24" width="24"> Utilidades</a></li>
-    <li><a href="#"><img src="{% static 'icons/dig-dug.svg' %}" height="24" width="24"> Opções</a></li>
-</ul>
-        </div>
-        <div class="col-sm-9">
           <div class="col-md-9 col-sm-12">
             <h2>Próxima Sessão</h2>
             <p>Nesta parte ficará descrita quando vai ser a próxima sessão, quanto tempo falta, e quais jogadores confirmaram.</p>
           </div>
           <div class="col-md-3 col-sm-12">
-          <p><h3>DM</h3>
+          <p><h3>Mestre</h3>
             {% for p in campaign.dms %}    
               <a href="{% url 'view_profile' p.username %}">
                 {% if p.profile_pic %}  <img src="{{ p.profile_pic }}" height="30" width="30" class="img-circle"> {% endif %}
@@ -53,8 +25,8 @@
                 </a></p>
             {% endfor %}
           </p>
-            <p><a href="{% url 'add_player' campaign.slug %}" class="btn btn-link">Adicionar novo jogador</a></p>
           </div>
-        </div>
-      </div>
+
 {% endblock %}
+
+
