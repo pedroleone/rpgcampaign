@@ -51,7 +51,9 @@ def players(request, slug):
     campaign = get_object_or_404(Campaign, slug=slug)
     permission = CampaignUser.objects.filter(campaign=campaign, user=request.user, permission=1)
     if not permission:
-        return render(request, 'campaign/add_user_denied.html', context=context)
+        campaign['add_user_permission'] = False
+    else
+        campaign['add_user_permission'] = True
     context['campaign'] = campaign
 
     if request.method == "POST":

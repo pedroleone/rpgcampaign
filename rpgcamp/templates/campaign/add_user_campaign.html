@@ -20,7 +20,7 @@
     </a></p>
 {% endfor %}
 
-
+{% if add_user_permission %}
     <h1>Adicionar Jogador</h1>
 {% if alert %}
 <div class="alert alert-{{alert.type}} alert-dismissible" role="alert">
@@ -33,4 +33,5 @@
         {{ form|crispy }}
         <button type="submit" class="btn btn-default" name="action">Adicionar Jogador</button>
     </form>
+{% endif %}
 {% endblock %}
