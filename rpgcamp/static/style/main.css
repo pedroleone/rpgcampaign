@@ -91,6 +91,8 @@ a:link, a:visited, a:active {
 a:hover {
     color: #052737;
     text-decoration: none;
+    cursor: pointer;
+
 
 }
 
