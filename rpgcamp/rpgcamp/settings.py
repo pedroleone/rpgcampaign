@@ -19,11 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'm2t(q6g-d_is4*arpj^6p_gqnb=y12@bv_99(94$b&8vp302u_'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = ['rpgcamp.pythonanywhere.com','127.0.0.1']
 
@@ -120,7 +116,9 @@ USE_L10N = True
 
 USE_TZ = True
 
-SECURE_SSL_REDIRECT = True
+
+
+NOCAPTCHA = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -136,7 +134,6 @@ LOGIN_REDIRECT_URL = '/'
 
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
-RECAPTCHA_PUBLIC_KEY = '6Le48hwUAAAAAApqrlMp4lk3W62hZb1ig0phnBjl'
-RECAPTCHA_PRIVATE_KEY = '6Le48hwUAAAAAAQG4FSdbnAAXHTItZWjlQvg-qqP'
 
+from local_settings import *
 
