@@ -39,7 +39,7 @@
           <p><h3>DM</h3>
             {% for p in campaign.dms %}    
               <a href="{% url 'view_profile' p.username %}">
-                {% if p.profile_pic %}  <img src="/media/{{ p.profile_pic }}" height="30" width="30" class="img-circle"> {% endif %}
+                {% if p.profile_pic %}  <img src="{{ p.profile_pic }}" height="30" width="30" class="img-circle"> {% endif %}
                 {{ p.display_name }} 
                 </a>
             {% endfor %}
@@ -47,10 +47,10 @@
 
           <p><h3>Jogadores</h3>
             {% for p in campaign.players %}    
-              <a href="{% url 'view_profile' p.username %}">
-                {% if p.profile_pic %}  <img src="/media/{{ p.profile_pic }}" height="30" width="30" class="img-circle"> {% endif %}
+              <p><a href="{% url 'view_profile' p.username %}">
+                {% if p.profile_pic %}  <img src="{{ p.profile_pic }}" height="30" width="30" class="img-circle"> {% endif %}
                 {{ p.display_name }} 
-                </a>
+                </a></p>
             {% endfor %}
           </p>
             <p><a href="{% url 'add_player' campaign.slug %}" class="btn btn-link">Adicionar novo jogador</a></p>

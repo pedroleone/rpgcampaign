@@ -14,3 +14,11 @@ class Profile(models.Model):
     facebook = models.URLField(blank=True)
     twitter = models.URLField(blank=True)
     home_city = models.CharField(blank=True, max_length=100)
+    
+    @property
+    def get_profile_pic(self):
+        if not self.profile_pic:
+            return '/static/img/blank_profile_pic.png'
+        else:
+            print(self.profile_pic)
+            return self.profile_pic.url
