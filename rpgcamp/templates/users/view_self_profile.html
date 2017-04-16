@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
 
 {% block content %}
 <div class="row">
@@ -12,7 +11,7 @@
 <p><strong>Cidade:</strong> {{ profile.home_city }}</p>
 <p><strong>Facebook:</strong> {{ profile.facebook }}</p>
 <p><strong>Twitter:</strong> {{ profile.twitter }}</p>
-<p><strong>Imagem de Perfil:</strong> <img src="/media/{{ profile.profile_pic }}"></p>
+<p><strong>Imagem de Perfil:</strong>{% if profile.profile_pic %} <img src="/media/{{ profile.profile_pic }}" class="img-responsive img-circle"> {% else %} Nenhuma imagem {% endif %}</p>
 
 <a href="{% url 'edit_profile' %}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"> </span> Editar Perfil</a>
 </div>

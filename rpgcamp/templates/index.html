@@ -16,13 +16,27 @@
 <div class="row">
 {% for campaign in campaign_list %}
 
-        <div class="col-md-4">
-          <h2>{{ campaign.campaign.name }}</h2>
+        <div class="col-md-4 campaign-list">
+          <h2><a href="{% url 'view_campaign' campaign.campaign.slug %}"> {{ campaign.campaign.name }} </a></h2>
           <p>{{ campaign.campaign.description }}</p>
           <p><strong>Sistema: </strong>{{ campaign.campaign.system }}</p>
-          
-          <p><strong>DM: </strong>{{ campaign.campaign.dms|join:", " }}</p>
-          <p><strong>Jogadores: </strong>{{ campaign.campaign.players|join:", " }}</p>
+          <p><h3>DM</h3>
+            {% for p in campaign.campaign.dms %}    
+              <a href="{% url 'view_profile' p.username %}">
+                {% if p.profile_pic %}  <img src="/media/{{ p.profile_pic }}" height="30" width="30" class="img-circle"> {% endif %}
+                {{ p.display_name }} 
+                </a>
+            {% endfor %}
+          </p>
+
+          <p><h3>Jogadores</h3>
+            {% for p in campaign.campaign.players %}    
+              <a href="{% url 'view_profile' p.username %}">
+                {% if p.profile_pic %}  <img src="/media/{{ p.profile_pic }}" height="30" width="30" class="img-circle"> {% endif %}
+                {{ p.display_name }} 
+                </a>
+            {% endfor %}
+          </p>
           
           <p><a class="btn btn-default" href="{% url 'view_campaign' campaign.campaign.slug %}" role="button">Acessar Campanha &raquo;</a></p>
         </div>

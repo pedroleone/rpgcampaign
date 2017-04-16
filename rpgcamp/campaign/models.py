@@ -26,18 +26,22 @@ class Campaign(models.Model):
         super(Campaign, self).save(*args, **kwargs)
     
     def dms(self):
-        dm_list = []
-        dm_obj = CampaignUser.objects.filter(campaign=self, permission=1)
-        for dm in dm_obj:
-            dm_list.append(dm.user.profile.display_name)
-        return dm_list
+        participant_list = []
+        participants = CampaignUser.objects.filter(campaign=self, permission=1)
+        for p in participants:
+            participant_list.append({'display_name': p.user.profile.display_name, 
+                            'username': p.user.username,
+                            'profile_pic': p.user.profile.profile_pic})
+        return participant_list
 
     def players(self):
-        players_list = []
-        players = CampaignUser.objects.filter(campaign=self, permission=2)
-        for player in players:
-            players_list.append(player.user.profile.display_name)
-        return players_list
+        participant_list = []
+        participants = CampaignUser.objects.filter(campaign=self, permission=2)
+        for p in participants:
+            participant_list.append({'display_name': p.user.profile.display_name, 
+                            'username': p.user.username,
+                            'profile_pic': p.user.profile.profile_pic})
+        return participant_list
 
     def __str__(self):
         return self.name
