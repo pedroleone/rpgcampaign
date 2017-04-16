@@ -65,6 +65,9 @@ def view_profile(request, username):
     context = { 'campaign_list': get_campaigns(request) }
     user = get_object_or_404(User, username=username)
     profile = get_object_or_404(Profile, user=user)
+
+    if request.user == user:
+        return HttpResponseRedirect('/profile/')
     
     context['profile'] = profile
     return render(request, 'users/view_profile.html', context)
