@@ -4,7 +4,6 @@ body {
   font-weight: 500;
 }
 
-
 h1 {
     font-family: 'Amarante', cursive;
     font-size: 50px;
@@ -81,18 +80,15 @@ h2,h3,h4,h5 {
 }
 
 
-/* unvisited link */
-a:link, a:visited, a:active {
+/* desabilitados por enquanto
+a:link:not(.btn), a:visited:not(.btn), a:active:not(.btn) {
     color: #023E5B;
     text-decoration: none;
 }
 
-/* mouse over link */
-a:hover {
+a:hover:not(.btn) {
     color: #052737;
     text-decoration: none;
     cursor: pointer;
-
-
 }
-
+*/
