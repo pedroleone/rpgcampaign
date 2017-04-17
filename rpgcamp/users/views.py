@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from users.forms import UserForm, UserProfileForm
+from users.forms import UserForm, UserProfileForm, UserProfileNewForm
 from django.contrib.auth import login 
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -24,6 +24,29 @@ def add_user(request):
         form = UserForm()
         
     return render(request, 'registration/add_user.html', {'form': form})
+
+def add_user_profile(request):
+    if request.method == "POST":
+        form = UserProfileNewForm(request.POST)
+        if form.is_valid():
+            new_user = User.objects.create_user(username=form.cleaned_data['username'],
+                                                email=form.cleaned_data['email'],
+                                                password=form.cleaned_data['password'] )
+
+            login(request, new_user)
+            profile = Profile(user=request.user, 
+                              display_name=form.cleaned_data['display_name'],
+                              home_city=form.cleaned_data['home_city'],
+                              bio=form.cleaned_data['bio'],
+                              facebook=form.cleaned_data['facebook'],
+                              twitter=form.cleaned_data['twitter'],)
+            profile.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = UserProfileNewForm()
+        
+    return render(request, 'registration/add_user_profile.html', {'form': form})
+
 
 @login_required(login_url='/login/')
 def edit_profile(request):

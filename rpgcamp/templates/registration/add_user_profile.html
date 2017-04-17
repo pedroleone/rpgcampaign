@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="col-md-6 col-md-offset-3">
+    <h1>Criar Usuário</h1>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" name="action">Criar Usuário</button>
+    </form>
+</div>
+{% endblock %}
