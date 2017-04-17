@@ -8,7 +8,7 @@
           <div class="col-md-9 col-sm-12">
             <h2>Próxima Sessão</h2>
             {% if next_session %}
-            <h3>{{ next_session.date }}</h3>
+            <h3>{{ next_session.date|date:"l\, j \d\e E \d\e Y " }} às {{next_session.date|time:"TIME_FORMAT" }}</h3>
             <p><strong>Local:</strong> {{ next_session.local }}</p>
             <p><strong>Observações:</strong> {{ next_session.notes }}</p>
             {% else %}

@@ -1,8 +1,10 @@
 {% extends "base_campaign.html" %}
 {% load crispy_forms_tags %}
 
-{% block content %}
-    <h1>New Session</h1>
+{% block menu-nova-sessao %}active{% endblock %}
+
+{% block campaign %}
+    <h1>Marcar Nova Sessão</h1>
 
     <form method="POST" action="">
         {% csrf_token %}

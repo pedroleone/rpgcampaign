@@ -112,6 +112,7 @@ def delete_player(request, slug):
     obj.delete()
     return HttpResponseRedirect(reverse('players', args=[slug]))
 
+@login_required(login_url='/login/')
 def new_session(request, slug):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
@@ -127,6 +128,29 @@ def new_session(request, slug):
             return HttpResponseRedirect(reverse('view_campaign', args=[campaign.slug])) 
     else:
         form = SessionForm()
+    context['campaign'] = campaign
     context['form'] = form
     return render(request, 'session/new_session.html', context=context)
             
+def view_sessions(request, slug):
+    context = { 'campaign_list': get_campaigns(request) }
+    campaign = get_object_or_404(Campaign, slug=slug)
+    context['campaign'] = campaign
+
+    session = Session.objects.filter(campaign=campaign, date__gte=timezone.now())
+    if session:
+        next_session = session[0]
+        context['next_session'] = next_session
+        if session.count() > 1:
+            future_sessions = session[1:]
+            context['future_sessions'] = future_sessions
+    context['old_sessions'] = Session.objects.filter(campaign=campaign, date__lt=timezone.now())
+    
+
+    session = Session.objects.filter(campaign=campaign, date__gte=timezone.now())
+    if session:
+        context['next_session'] = next_session
+    
+
+    return render(request, 'session/view_sessions.html', context=context)
+    
