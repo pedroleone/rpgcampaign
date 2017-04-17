@@ -159,14 +159,6 @@ def view_session(request, slug, session_id):
     context['session'] = session
     return render(request, 'session/view_session.html', context=context)
     
-@login_required(login_url='/login/')
-def delete_session(request, slug):
-    context = { 'campaign_list': get_campaigns(request) }
-    campaign = get_object_or_404(Campaign, slug=slug)
-    session = get_object_or_404(Session, id=session_id, campaign=campaign)
-    context['campaign'] = campaign
-    context['session'] = session
-    return render(request, 'session/view_session.html', context=context)
 
 @login_required(login_url='/login/')
 def edit_session(request, slug, session_id):
