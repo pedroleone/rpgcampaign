@@ -39,11 +39,9 @@ def edit_profile(request):
         form = UserProfileForm(request.POST, request.FILES)
         form.user = request.user
         if form.is_valid():
-            print(form.cleaned_data)
             profile = form.save(commit=False)
             if form.cleaned_data['profile_pic'] is None:
                 profile.profile_pic = initial_profile.profile_pic
-                print("no profile pic uploaded", profile.profile_pic)
             profile.user = request.user
             profile.id = initial_profile.id
             profile.save()

@@ -58,3 +58,21 @@ class CampaignUser(models.Model):
 
     def __str__(self):
         return self.campaign.name
+
+
+class CampaignNotes(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    gm_only = models.BooleanField(default=True)
+    text = models.TextField()
+    published_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=False)
+
+
+class Session(models.Model):
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    date = models.DateTimeField()    
+    notes = models.TextField(blank=True)
+    local = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ["date"]

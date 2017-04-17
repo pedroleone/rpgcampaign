@@ -7,7 +7,13 @@
 
           <div class="col-md-9 col-sm-12">
             <h2>Próxima Sessão</h2>
-            <p>Nesta parte ficará descrita quando vai ser a próxima sessão, quanto tempo falta, e quais jogadores confirmaram.</p>
+            {% if next_session %}
+            <h3>{{ next_session.date }}</h3>
+            <p><strong>Local:</strong> {{ next_session.local }}</p>
+            <p><strong>Observações:</strong> {{ next_session.notes }}</p>
+            {% else %}
+            <p>Nenhuma sessão marcada :( </p>
+            {% endif %}
           </div>
           <div class="col-md-3 col-sm-12">
           <p><h3>Mestre</h3>

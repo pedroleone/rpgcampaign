@@ -1,9 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from campaign.forms import CampaignForm, AddUserForm
-from campaign.models import Campaign, CampaignUser
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from campaign.forms import *
+from campaign.models import *
+
+from django.utils import timezone
+from datetime import datetime
 
 def get_campaigns(request):
     if request.user.is_authenticated:
@@ -39,6 +42,10 @@ def view_campaign(request, slug):
         permission = CampaignUser.objects.filter(campaign=campaign, user=request.user)
         if not permission:
             return render(request, 'campaign_denied.html', context=context)
+    session = Session.objects.filter(campaign=campaign, date__gte=timezone.now())
+    if session:
+        next_session = session[0]
+        context['next_session'] = next_session
 
     context['campaign'] = campaign
 
@@ -101,9 +108,25 @@ def players(request, slug):
 def delete_player(request, slug):
     campaign_id = request.POST.get('delete_campaign_id')
     user_id = request.POST.get('delete_user_id')
-    
-
     obj = CampaignUser.objects.get(user=user_id, campaign=campaign_id)
-    print(obj, user_id, campaign_id)
     obj.delete()
     return HttpResponseRedirect(reverse('players', args=[slug]))
+
+def new_session(request, slug):
+    context = { 'campaign_list': get_campaigns(request) }
+    campaign = get_object_or_404(Campaign, slug=slug)
+    if request.method == "POST":
+        form = SessionForm(request.POST)
+        if form.is_valid():
+            session = Session(campaign=campaign, 
+                              date=form.cleaned_data['date'],
+                              local=form.cleaned_data['local'],
+                              notes=form.cleaned_data['notes'])
+            
+            session.save()
+            return HttpResponseRedirect(reverse('view_campaign', args=[campaign.slug])) 
+    else:
+        form = SessionForm()
+    context['form'] = form
+    return render(request, 'session/new_session.html', context=context)
+            

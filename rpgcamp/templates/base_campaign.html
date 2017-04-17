@@ -42,7 +42,7 @@
   <li><a data-toggle="collapse" href="#collapse-sessao"> <img src="{% static 'icons/calendar.svg' %}" height="24" width="24"> Sessões <span class="caret"></span></a></li>
  
       <ul id="collapse-sessao" class="collapse side-margin">
-        <li><a href="#"><img src="{% static 'icons/read.svg' %}" height="24" width="24"> Marcar Nova Sessão</a></li>
+        <li><a href="{% url 'new_session' campaign.slug %}"><img src="{% static 'icons/read.svg' %}" height="24" width="24"> Marcar Nova Sessão</a></li>
         <li><a href="#"><img src="{% static 'icons/pocket-watch.svg' %}" height="24" width="24"> Remarcar Sessão</a></li>
         <li><a href="#"><img src="{% static 'icons/white-book.svg' %}" height="24" width="24"> Diário de Sessões</a></li>
         <li><a href="#"><img src="{% static 'icons/tied-scroll.svg' %}" height="24" width="24"> Histórico</a></li>
