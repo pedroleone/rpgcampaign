@@ -13,3 +13,12 @@ class SessionForm(forms.ModelForm):
     class Meta:
         model = Session
         fields = ['date', 'notes', 'local']
+        labels = {
+            'date': 'Date',
+            'notes': 'Observações',
+            'local': 'Local do Jogo',
+        }
+        help_texts = {
+            'notes': 'Você pode usar <a href="http://daringfireball.net/projects/markdown/">Markdown</a> para formatar o texto.',
+            'local': 'Você pode usar <a href="http://daringfireball.net/projects/markdown/">Markdown</a> para formatar o texto.',
+        }

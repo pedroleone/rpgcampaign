@@ -7,14 +7,14 @@
 
 {% if next_session %}
 <h1>Próxima Sessão</h1>
-<ul><li>{{ next_session.date|date:"l\, j \d\e E \d\e Y " }} às {{next_session.date|time:"TIME_FORMAT" }}</li></ul>
+<ul><li><a href="{% url 'view_session' campaign.slug next_session.id %}">{{ next_session.date|date:"l\, j \d\e E \d\e Y " }} às {{next_session.date|time:"TIME_FORMAT" }}</a></li></ul>
 {% endif %}
 
 {% if future_sessions %}
 <h1>Sessões Futuras</h1>
 <ul>
 {% for s in future_sessions %}
-<li>{{ s.date|date:"l\, j \d\e E \d\e Y " }} às {{s.date|time:"TIME_FORMAT" }}</li>
+<li><a href="{% url 'view_session' campaign.slug s.id %}">{{ s.date|date:"l\, j \d\e E \d\e Y " }} às {{s.date|time:"TIME_FORMAT" }}</a></li>
 {% endfor %}
 </ul>
 {% endif %}
@@ -23,7 +23,7 @@
 <h1>Sessões Passadas</h1>
 <ul>
 {% for s in old_sessions %}
-<li>{{ s.date|date:"l\, j \d\e E \d\e Y " }} às {{s.date|time:"TIME_FORMAT" }}</li>
+<li><a href="{% url 'view_session' campaign.slug s.id %}">{{ s.date|date:"l\, j \d\e E \d\e Y " }} às {{s.date|time:"TIME_FORMAT" }}</a></li>
 {% endfor %}
 </ul>
 {% endif %}

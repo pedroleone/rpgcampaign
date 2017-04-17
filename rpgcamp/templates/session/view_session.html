@@ -1,0 +1,15 @@
+{% extends "base_campaign.html" %}
+{% load crispy_forms_tags %}
+{% load markdownify %}
+{% block menu-sessoes %}active{% endblock %}
+
+{% block campaign %}
+
+<h2>Sessão</h2>
+<h3>Data</h3>
+<p>{{ session.date|date:"l\, j \d\e E \d\e Y " }} às {{session.date|time:"TIME_FORMAT" }}</p>
+<h3>Observações</h3>
+<p>{{ session.notes | markdown | safe  }}</p>
+<h3>Local</h3>
+<p>{{ session.local | markdown | safe  }}</p>
+{% endblock %}

@@ -153,4 +153,14 @@ def view_sessions(request, slug):
     
 
     return render(request, 'session/view_sessions.html', context=context)
+
+def view_session(request, slug, session_id):
+    context = { 'campaign_list': get_campaigns(request) }
+    campaign = get_object_or_404(Campaign, slug=slug)
+    session = get_object_or_404(Session, id=session_id, campaign=campaign)
+    context['campaign'] = campaign
+    context['session'] = session
+
+
+    return render(request, 'session/view_session.html', context=context)
     
