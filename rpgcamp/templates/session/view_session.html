@@ -12,4 +12,6 @@
 <p>{{ session.notes | markdown | safe  }}</p>
 <h3>Local</h3>
 <p>{{ session.local | markdown | safe  }}</p>
+<a class="btn btn-default" href="{% url 'edit_session' campaign.slug session.id%}">Editar</a>
 {% endblock %}
+

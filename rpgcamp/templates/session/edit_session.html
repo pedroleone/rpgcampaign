@@ -1,0 +1,40 @@
+{% extends "base_campaign.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+{% block menu-nova-sessao %}active{% endblock %}
+
+
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'style/sidebar.css' %}" >
+<link rel="stylesheet" href="{% static 'style/bootstrap-datetimepicker.min.css' %}" >
+{% endblock %}
+
+{% block campaign %}
+    <h1>Marcar Nova Sessão</h1>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success" name="action" value="save">Salvar</button>
+        <button type="submit" class="btn btn-danger" name="action" value="delete">Excluir</button>
+    </form>
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'js/moment-with-locales.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+
+
+<script type="text/javascript">
+    $(function () {
+        $('#id_date').datetimepicker({
+            locale: 'pt-br'
+        });
+    });
+</script>
+
+
+{% endblock %}
