@@ -136,6 +136,7 @@ def delete_player(request, slug):
 def new_session(request, slug):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
+    context['permission'] = get_permission(request, campaign)
     if request.method == "POST":
         form = SessionForm(request.POST)
         if form.is_valid():
