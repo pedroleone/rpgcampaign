@@ -6,12 +6,54 @@
 {% block campaign %}
 
 <h2>Sessão</h2>
+
 <h3>Data</h3>
 <p>{{ session.date|date:"l\, j \d\e E \d\e Y " }} às {{session.date|time:"TIME_FORMAT" }}</p>
+<a class="btn btn-default" href="{% url 'edit_session' campaign.slug session.id%}">Editar Sessão</a>
+{% if session.notes %}
 <h3>Observações</h3>
 <p>{{ session.notes | markdown | safe  }}</p>
+{%endif%}
+{% if session.local %}
 <h3>Local</h3>
 <p>{{ session.local | markdown | safe  }}</p>
-<a class="btn btn-default" href="{% url 'edit_session' campaign.slug session.id%}">Editar</a>
+{%endif%}
+
+
+<h4>Presença</h4>
+
+
+{% for player in session.sessionuser_set.all %}
+<div class="row">
+<div class="col-md-3 col-xs-4">
+<a href="{% url 'view_profile' player.user.username %}">
+{% if player.user.profile.get_profile_pic %}  <img src="{{ player.user.profile.get_profile_pic }}" height="30" width="30" class="img-circle"> {% endif %}
+{{ player.user.profile.display_name }} 
+</a>
+</div>
+<div class="col-md-3 col-xs-4 text-center">{{ player.get_status_display}} </div>
+<div class="col-md-6 col-xs-4">
+<form method="POST" action="participation/">
+{% csrf_token %}
+<input type="hidden" name="user_id" value="{{player.user.id}}">
+    <div class="btn-group btn-group-justified">
+         <div class="btn-group" role="group">
+             <button class="btn btn-success" type="submit" name="action" value="confirm-yes"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+         </div>
+         <div class="btn-group" role="group">
+             <button class="btn btn-danger" type="submit" name="action" value="confirm-no"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+         </div>
+         <div class="btn-group" role="group">
+             <button class="btn btn-warning" type="submit" name="action" value="confirm-not-yet"><span class="glyphicon glyphicon-question-sign"></span></button>
+         </div>
+
+         <div class="btn-group" role="group">
+             <a class="btn btn-info" href="#"><span class="glyphicon glyphicon-option-horizontal"></span></a>
+         </div>
+    </div>
+</form>
+</div>
+</div>
+{%endfor%}
 {% endblock %}
 

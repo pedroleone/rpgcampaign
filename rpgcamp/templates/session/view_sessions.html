@@ -6,12 +6,12 @@
 {% block campaign %}
 
 {% if next_session %}
-<h1>Próxima Sessão</h1>
+<h2>Próxima Sessão</h2>
 <ul><li><a href="{% url 'view_session' campaign.slug next_session.id %}">{{ next_session.date|date:"l\, j \d\e E \d\e Y " }} às {{next_session.date|time:"TIME_FORMAT" }}</a></li></ul>
 {% endif %}
 
 {% if future_sessions %}
-<h1>Sessões Futuras</h1>
+<h2>Sessões Futuras</h2>
 <ul>
 {% for s in future_sessions %}
 <li><a href="{% url 'view_session' campaign.slug s.id %}">{{ s.date|date:"l\, j \d\e E \d\e Y " }} às {{s.date|time:"TIME_FORMAT" }}</a></li>
@@ -20,12 +20,16 @@
 {% endif %}
 
 {% if old_sessions %}
-<h1>Sessões Passadas</h1>
+<h2>Sessões Passadas</h2>
 <ul>
 {% for s in old_sessions %}
 <li><a href="{% url 'view_session' campaign.slug s.id %}">{{ s.date|date:"l\, j \d\e E \d\e Y " }} às {{s.date|time:"TIME_FORMAT" }}</a></li>
 {% endfor %}
 </ul>
+{% endif %}
+
+{% if not next_session and not future_sessions and not old_sessions %}
+<h2>Não há sessões cadastradas</h2>
 {% endif %}
 
 {% endblock %}

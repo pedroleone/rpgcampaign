@@ -76,3 +76,33 @@ class Session(models.Model):
 
     class Meta:
         ordering = ["date"]
+
+    def save(self, *args, **kwargs):
+        super(Session, self).save(*args, **kwargs)
+        player_list = CampaignUser.objects.filter(campaign=self.campaign)
+        session_user = SessionUser.objects.filter(campaign=self.campaign, 
+                                                  session=self)
+        if session_user:
+            session_user.delete()
+        
+        for player in player_list:
+            session_user = SessionUser(campaign=self.campaign, 
+                                       session=self,
+                                       user=player.user)
+            session_user.save()
+
+
+
+
+class SessionUser(models.Model):
+    OPTIONS = (   (1,'Não Informado'), 
+                  (2,'Não Vai Participar'), 
+                  (3, 'Vai Participar') ,
+                  (4, 'Não Sabe')
+              )
+
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE)
+    status = models.IntegerField(choices=OPTIONS, default=1)
+    note = models.CharField(max_length=100)

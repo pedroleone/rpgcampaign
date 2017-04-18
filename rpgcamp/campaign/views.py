@@ -80,6 +80,9 @@ def players(request, slug):
                 if not camp_user:
                     player = CampaignUser(campaign=campaign, user=user[0],permission=2)
                     player.save()
+                    future_sessions = Session.objects.filter(campaign=campaign, date__gte=timezone.now()).first()
+                    if future_sessions:
+                        future_sessions.save()
                     alert = {
                         'title': "Sucesso!",
                         'type': "success",
@@ -108,6 +111,11 @@ def delete_player(request, slug):
     user_id = request.POST.get('delete_user_id')
     obj = CampaignUser.objects.get(user=user_id, campaign=campaign_id)
     obj.delete()
+
+    future_sessions = Session.objects.filter(campaign=campaign_id, date__gte=timezone.now()).first()
+    if future_sessions:
+        future_sessions.save()
+
     return HttpResponseRedirect(reverse('players', args=[slug]))
 
 
@@ -190,3 +198,40 @@ def edit_session(request, slug, session_id):
     context['campaign'] = campaign
     context['form'] = form
     return render(request, 'session/edit_session.html', context=context)
+
+def session_participation(request, slug, session_id):
+    context = { 'campaign_list': get_campaigns(request) }
+    action = request.POST.get('action')
+    next_page = request.POST.get('redirect')
+    user_id = request.POST.get('user_id')
+    campaign = get_object_or_404(Campaign, slug=slug)
+    session = get_object_or_404(Session, id=session_id, campaign=campaign)
+    session_user = get_object_or_404(SessionUser, 
+                                     user=user_id, 
+                                     campaign=campaign, 
+                                     session=session)
+
+    print(next_page)
+    if action == "confirm-yes":
+        session_user.status = 3
+        session_user.save()
+        redirect = True
+    elif action == "confirm-no":
+        session_user.status = 2
+        session_user.save()
+        redirect = True
+    elif action == "confirm-not-yet":
+        session_user.status = 4
+        session_user.save()
+        redirect = True
+
+    if redirect:
+        if next_page=="main":
+            #HttpResponseRedirect(reverse('view_campaign', args=[slug])) 
+            return HttpResponseRedirect(reverse('view_campaign', args=[slug])) 
+        else:
+            return HttpResponseRedirect(reverse('view_session', args=[slug, session.id])) 
+            
+    
+
+    return render(request, 'session/edit_participation.html', context=context)
