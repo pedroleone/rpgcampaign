@@ -94,4 +94,5 @@ def view_profile(request, username):
         return HttpResponseRedirect('/profile/')
     
     context['profile'] = profile
+    context['user'] = user
     return render(request, 'users/view_profile.html', context)
