@@ -5,6 +5,7 @@
 {% block menu-players %}active{% endblock %}
 
 {% block campaign %}
+<h2>Jogadores</h2>
 <div class="col-md-6">
 <p><h3>Mestre</h3>
 {% for p in campaign.dms %}    
@@ -20,7 +21,11 @@
     <p><a href="{% url 'view_profile' p.username %}">
     {% if p.profile_pic %}  <img src="{{ p.profile_pic }}" height="30" width="30" class="img-circle"> {% endif %}
     {{ p.display_name }} 
-    </a> <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-confirm" data-cid="{{campaign.id}}" data-username="{{p.display_name}}" data-uid="{{p.id}}" ><span class="glyphicon glyphicon-remove"></span></button> </p>
+    </a> 
+    {% if permission == 1 or p.id == request.user.id%}
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-confirm" data-cid="{{campaign.id}}" data-username="{{p.display_name}}" data-uid="{{p.id}}" ><span class="glyphicon glyphicon-remove"></span></button> 
+    {% endif %}
+    </p>
 {% endfor %}
 </div>
 
@@ -49,7 +54,7 @@
 
 
 
-{% if add_user_permission %}
+{% if permission == 1 %}
 <div class="col-md-6">
     <h2>Adicionar Jogador</h2>
 {% if alert %}

@@ -12,6 +12,13 @@ def get_campaigns(request):
     if request.user.is_authenticated:
         return CampaignUser.objects.filter(user=request.user)
 
+def get_permission(request, campaign):
+    permission = CampaignUser.objects.filter(campaign=campaign, user=request.user)
+    if permission:
+        return permission.first().permission
+    else:
+        return None
+
 
 def index(request):
     campaign_list = get_campaigns(request)
@@ -38,17 +45,19 @@ def create_campaign(request):
 def view_campaign(request, slug):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
+    permission = get_permission(request, campaign)
     if campaign.private is True:
-        permission = CampaignUser.objects.filter(campaign=campaign, user=request.user)
         if not permission:
             return render(request, 'campaign_denied.html', context=context)
     session = Session.objects.filter(campaign=campaign, date__gte=timezone.now())
     if session:
         next_session = session[0]
         context['next_session'] = next_session
-
     context['campaign'] = campaign
-    return render(request, 'campaign.html', context=context)
+    context['permission'] = permission
+
+    return render(request, 'campaign/campaign.html', context=context)
+    
 
 
 from django.contrib.auth.models import User
@@ -56,11 +65,7 @@ from django.contrib.auth.models import User
 def players(request, slug): 
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
-    permission = CampaignUser.objects.filter(campaign=campaign, user=request.user, permission=1)
-    if not permission:
-        context['add_user_permission'] = False
-    else:
-        context['add_user_permission'] = True
+    context['permission'] = get_permission(request, campaign)
     context['campaign'] = campaign
     if request.method == "POST":
         form = AddUserForm(request.POST)
@@ -110,13 +115,21 @@ def delete_player(request, slug):
     campaign_id = request.POST.get('delete_campaign_id')
     user_id = request.POST.get('delete_user_id')
     obj = CampaignUser.objects.get(user=user_id, campaign=campaign_id)
+    if obj.permission == 2:
+        redirect = True 
+    else:
+        redirect = False
+    
     obj.delete()
 
     future_sessions = Session.objects.filter(campaign=campaign_id, date__gte=timezone.now()).first()
     if future_sessions:
         future_sessions.save()
-
-    return HttpResponseRedirect(reverse('players', args=[slug]))
+    
+    if redirect:
+        return HttpResponseRedirect('/')
+    else:
+        return HttpResponseRedirect(reverse('players', args=[slug]))
 
 
 @login_required(login_url='/login/')
@@ -143,6 +156,7 @@ def new_session(request, slug):
 def view_sessions(request, slug):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
+    context['permission'] = get_permission(request, campaign)
     context['campaign'] = campaign
     session = Session.objects.filter(campaign=campaign, date__gte=timezone.now())
     if session:
@@ -163,6 +177,7 @@ def view_session(request, slug, session_id):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
     session = get_object_or_404(Session, id=session_id, campaign=campaign)
+    context['permission'] = get_permission(request, campaign)
     context['campaign'] = campaign
     context['session'] = session
     return render(request, 'session/view_session.html', context=context)
@@ -206,6 +221,7 @@ def session_participation(request, slug, session_id):
     user_id = request.POST.get('user_id')
     campaign = get_object_or_404(Campaign, slug=slug)
     session = get_object_or_404(Session, id=session_id, campaign=campaign)
+    context['permission'] = get_permission(request, campaign)
     session_user = get_object_or_404(SessionUser, 
                                      user=user_id, 
                                      campaign=campaign, 

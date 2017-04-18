@@ -9,7 +9,9 @@
 
 <h3>Data</h3>
 <p>{{ session.date|date:"l\, j \d\e E \d\e Y " }} às {{session.date|time:"TIME_FORMAT" }}</p>
+{% if permission == 1 %}
 <a class="btn btn-default" href="{% url 'edit_session' campaign.slug session.id%}">Editar Sessão</a>
+{% endif %}
 {% if session.notes %}
 <h3>Observações</h3>
 <p>{{ session.notes | markdown | safe  }}</p>
@@ -33,6 +35,7 @@
 </div>
 <div class="col-md-3 col-xs-4 text-center">{{ player.get_status_display}} </div>
 <div class="col-md-6 col-xs-4">
+{% if permission == 1 or player.user == request.user%}
 <form method="POST" action="participation/">
 {% csrf_token %}
 <input type="hidden" name="user_id" value="{{player.user.id}}">
@@ -52,6 +55,7 @@
          </div>
     </div>
 </form>
+{% endif %}
 </div>
 </div>
 {%endfor%}

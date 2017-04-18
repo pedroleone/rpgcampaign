@@ -42,8 +42,9 @@
   <li><a class="{% block menu-home %}{% endblock %}" href="{% url 'view_campaign' campaign.slug%}"><img src="{% static 'icons/house.svg' %}" height="24" width="24"> Início</a></li>
   <li><a class="{% block menu-players %}{% endblock %}" href="{% url 'players' campaign.slug%}"><img src="{% static 'icons/minions.svg' %}" height="24" width="24"> Jogadores</a></li>
   <li><a class="{% block menu-sessoes %}{% endblock %}" href="{% url 'view_sessions' campaign.slug %}"><img src="{% static 'icons/calendar.svg' %}" height="24" width="24"> Sessões</a></li>
+  {% if permission == 1 %}
   <li><a class="{% block menu-nova-sessao %}{% endblock %}" href="{% url 'new_session' campaign.slug %}"><img src="{% static 'icons/read.svg' %}" height="24" width="24"> Marcar Nova Sessão</a></li>
-  
+  {% endif %}
 
    <!--
     <li><a href="#"><img src="{% static 'icons/brutal-helm.svg' %}" height="24" width="24"> Personagens</a></li>
