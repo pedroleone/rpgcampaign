@@ -31,3 +31,17 @@ class SessionForm(forms.ModelForm):
             'notes': 'Opcional. Você pode usar <a href="http://daringfireball.net/projects/markdown/">Markdown</a> para formatar o texto.',
             'local': 'Opcional. Você pode usar <a href="http://daringfireball.net/projects/markdown/">Markdown</a> para formatar o texto.',
         }
+
+class ParticipationForm(forms.ModelForm):
+    class Meta:
+        model = SessionUser
+        fields = ['status', 'note']
+        labels = {
+            'status': 'Opção    ',
+            'note': 'Observações',
+        }
+        help_texts = {
+            'note': 'Opcional',
+        }
+
+

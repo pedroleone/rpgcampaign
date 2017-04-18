@@ -55,7 +55,8 @@ def view_campaign(request, slug):
         context['next_session'] = next_session
     context['campaign'] = campaign
     context['permission'] = permission
-
+    form = ParticipationForm()
+    context['form'] = form
     return render(request, 'campaign/campaign.html', context=context)
     
 
@@ -155,6 +156,7 @@ def new_session(request, slug):
 
 @login_required(login_url='/login/')            
 def view_sessions(request, slug):
+
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
     context['permission'] = get_permission(request, campaign)
@@ -178,6 +180,8 @@ def view_session(request, slug, session_id):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
     session = get_object_or_404(Session, id=session_id, campaign=campaign)
+    form = ParticipationForm()
+    context['form'] = form
     context['permission'] = get_permission(request, campaign)
     context['campaign'] = campaign
     context['session'] = session
@@ -228,7 +232,7 @@ def session_participation(request, slug, session_id):
                                      campaign=campaign, 
                                      session=session)
 
-    print(next_page)
+    redirect = False
     if action == "confirm-yes":
         session_user.status = 3
         session_user.save()
@@ -241,6 +245,17 @@ def session_participation(request, slug, session_id):
         session_user.status = 4
         session_user.save()
         redirect = True
+    elif action == "edit-confirm":
+        form = ParticipationForm(request.POST)
+        if form.is_valid():
+            session_user.status = form.cleaned_data['status']
+            session_user.note = form.cleaned_data['note']
+            session_user.save()
+            redirect = True
+        else:
+            return HttpResponse(status=500)
+
+    
 
     if redirect:
         if next_page=="main":

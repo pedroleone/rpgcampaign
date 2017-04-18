@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% load markdownify %}
 {% block menu-sessoes %}active{% endblock %}
-
+{% load crispy_forms_tags %}
 {% block campaign %}
 
 <h2>Sessão</h2>
@@ -10,7 +10,8 @@
 <h3>Data</h3>
 <p>{{ session.date|date:"l\, j \d\e E \d\e Y " }} às {{session.date|time:"TIME_FORMAT" }}</p>
 {% if permission == 1 %}
-<a class="btn btn-default" href="{% url 'edit_session' campaign.slug session.id%}">Editar Sessão</a>
+<a class="btn btn-default" href="{% url 'edit_session' campaign.slug session.id%}"><span class="glyphicon glyphicon-pencil"></span></a>
+
 {% endif %}
 {% if session.notes %}
 <h3>Observações</h3>
@@ -27,14 +28,14 @@
 
 {% for player in session.sessionuser_set.all %}
 <div class="row">
-<div class="col-md-3 col-xs-4">
+<div class="col-md-3 col-xs-6">
 <a href="{% url 'view_profile' player.user.username %}">
 {% if player.user.profile.get_profile_pic %}  <img src="{{ player.user.profile.get_profile_pic }}" height="30" width="30" class="img-circle"> {% endif %}
 {{ player.user.profile.display_name }} 
 </a>
 </div>
-<div class="col-md-3 col-xs-4 text-center">{{ player.get_status_display}} </div>
-<div class="col-md-6 col-xs-4">
+<div class="col-md-3 col-xs-6 text-center">{{ player.get_status_display}} </div>
+<div class="col-md-6 col-xs-12">
 {% if permission == 1 or player.user == request.user%}
 <form method="POST" action="participation/">
 {% csrf_token %}
@@ -51,13 +52,57 @@
          </div>
 
          <div class="btn-group" role="group">
-             <a class="btn btn-info" href="#"><span class="glyphicon glyphicon-option-horizontal"></span></a>
+             <a class="btn btn-info" href="#" data-toggle="modal" data-target="#modal-confirm" data-username="{{player.user.profile.display_name}}" data-uid="{{player.user.id}}"><span class="glyphicon glyphicon-option-horizontal"></span></a>
          </div>
     </div>
 </form>
 {% endif %}
 </div>
+{% if player.note %}
+<div class="col-md-12 col-xs-12"> <strong>Observação:</strong> {{player.note}}</div>
+{%endif%}
 </div>
+
+<div class="modal fade" id="modal-confirm" tabindex="-1" role="dialog" aria-labelledby="confirmModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel"><span id="modal-username"></span></h4>
+      </div>
+      <form method="POST" action="participation/">
+      <div class="modal-body">
+        {{ form|crispy }}
+      </div>
+      <div class="modal-footer">
+        
+            {% csrf_token %}
+            
+            <input type="hidden" name="user_id" value="" id="modal-input-uid">
+            <a class="btn btn-default" data-dismiss="modal">Cancelar</a>
+            <button type="submit" name="action" value="edit-confirm" class="btn btn-success">Salvar</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> <!-- modal -->
+
+
 {%endfor%}
 {% endblock %}
 
+{% block scripts %}
+<script>
+$('#modal-confirm').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) 
+  var username = button.data('username') 
+  var userid = button.data('uid')
+  var modal = $(this)
+  modal.find('#modal-username').text(username)
+  $('#modal-input-uid').val(userid)
+
+  
+})
+
+</script>
+{% endblock %}

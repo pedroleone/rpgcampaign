@@ -105,4 +105,4 @@ class SessionUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     status = models.IntegerField(choices=OPTIONS, default=1)
-    note = models.CharField(max_length=100)
+    note = models.CharField(max_length=100, blank=True)
