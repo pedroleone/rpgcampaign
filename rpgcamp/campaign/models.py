@@ -106,3 +106,13 @@ class SessionUser(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     status = models.IntegerField(choices=OPTIONS, default=1)
     note = models.CharField(max_length=100, blank=True)
+    
+    @property
+    def player_type(self):
+        find = CampaignUser.objects.filter(user=self.user, campaign=self.campaign).first()
+        if not find:
+            return "N/A"
+        elif find.permission == 1:
+            return "GM"
+        else:
+            return "Player"

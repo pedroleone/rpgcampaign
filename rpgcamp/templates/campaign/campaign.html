@@ -27,7 +27,7 @@
 <a href="{% url 'view_profile' player.user.username %}">
 {% if player.user.profile.get_profile_pic %}  <img src="{{ player.user.profile.get_profile_pic }}" height="30" width="30" class="img-circle"> {% endif %}
 {{ player.user.profile.display_name }} 
-</a>
+</a>{% if player.player_type == "GM" %} <span class="badge">Mestre</span> {%endif%}
 </div>
 <div class="col-md-4 col-xs-6 text-center">{{ player.get_status_display}} </div>
 <div class="col-md-4 col-xs-12">
