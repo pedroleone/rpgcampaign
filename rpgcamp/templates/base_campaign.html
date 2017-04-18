@@ -5,6 +5,7 @@
 {% endblock %}      
 
 {% block specific_menu %}
+<!--
             <li class="dropdown hidden-lg hidden-md">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu Geral<span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -25,6 +26,7 @@
                 <li><a href="#">Utilidades</a></li>
               </ul>
             </li>
+-->            
 {% endblock %}      
 
 
@@ -34,7 +36,7 @@
         </div>
 
       <div class="row">
-        <div class="col-sm-3 hidden-sm hidden-xs sidemenu">
+        <div class="col-sm-3 col-xs-12 sidemenu">
 
 <ul>
   <li><a class="{% block menu-home %}{% endblock %}" href="{% url 'view_campaign' campaign.slug%}"><img src="{% static 'icons/house.svg' %}" height="24" width="24"> Início</a></li>
@@ -54,7 +56,7 @@
     -->
 </ul>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9 col-xs-12">
         {% block campaign %}
         {% endblock %}
 
