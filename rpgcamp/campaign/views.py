@@ -72,7 +72,7 @@ def players(request, slug):
         form = AddUserForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['user']
-            user = User.objects.filter(username=username)
+            user = User.objects.filter(username=username).first()
             if not user:
                 alert = {
                     'title': "Erro!",
@@ -82,13 +82,10 @@ def players(request, slug):
                 context['alert'] = alert
                 form = AddUserForm()
             else:
-                camp_user = CampaignUser.objects.filter(campaign=campaign, user=user[0])
+                camp_user = CampaignUser.objects.filter(campaign=campaign, user=user)
                 if not camp_user:
-                    player = CampaignUser(campaign=campaign, user=user[0],permission=2)
+                    player = CampaignUser(campaign=campaign, user=user,permission=2)
                     player.save()
-                    future_sessions = Session.objects.filter(campaign=campaign, date__gte=timezone.now()).first()
-                    if future_sessions:
-                        future_sessions.save()
                     alert = {
                         'title': "Sucesso!",
                         'type': "success",
@@ -113,19 +110,18 @@ def players(request, slug):
 
 @login_required(login_url='/login/')
 def delete_player(request, slug):
-    campaign_id = request.POST.get('delete_campaign_id')
+    campaign = get_object_or_404(Campaign, id=request.POST.get('delete_campaign_id'))
     user_id = request.POST.get('delete_user_id')
-    obj = CampaignUser.objects.get(user=user_id, campaign=campaign_id)
-    if obj.permission == 2:
+    obj = CampaignUser.objects.get(user=user_id, campaign=campaign)
+    
+    permission = get_permission(request, campaign)
+
+    if permission == 2:
         redirect = True 
     else:
         redirect = False
     
     obj.delete()
-
-    future_sessions = Session.objects.filter(campaign=campaign_id, date__gte=timezone.now()).first()
-    if future_sessions:
-        future_sessions.save()
     
     if redirect:
         return HttpResponseRedirect('/')

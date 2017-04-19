@@ -13,7 +13,7 @@
             <h3>{{ next_session.date|date:"l\, j \d\e E \d\e Y " }} às {{next_session.date|time:"TIME_FORMAT" }}</h3>
             {% if permission == 1 %}
             <a class="btn btn-default" href="{% url 'edit_session' campaign.slug next_session.id%}"><span class="glyphicon glyphicon-pencil"></span></a>
-            <a class="btn btn-default" href="{% url 'view_session' campaign.slug next_session.id%}"><span class="glyphicon glyphicon-eye-open"></span></a>
+            <!--<a class="btn btn-default" href="{% url 'view_session' campaign.slug next_session.id%}"><span class="glyphicon glyphicon-eye-open"></span></a>-->
             {% endif %}
             <p><h4>Local</h4> {{ next_session.local | markdown | safe }}</p>
             <p><h4>Observações</h4> {{ next_session.notes | markdown | safe }}</p>

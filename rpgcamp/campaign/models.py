@@ -4,7 +4,7 @@ from django.utils.text import slugify
 from django.http import HttpResponseRedirect
 from itertools import count
 import datetime
-
+from django.utils import timezone
 
 class Campaign(models.Model):
     name = models.CharField(max_length=50)
@@ -59,6 +59,19 @@ class CampaignUser(models.Model):
     def __str__(self):
         return self.campaign.name
 
+    def delete(self, *args, **kwargs):
+        super(CampaignUser, self).delete(*args, **kwargs)
+        SessionUser.objects.filter(user=self.user, campaign=self.campaign, session__date__gte=timezone.now()).delete()
+
+    def save(self, *args, **kwargs):
+        super(CampaignUser, self).save(*args, **kwargs)
+        future_sessions = Session.objects.filter(campaign=self.campaign, date__gte=timezone.now())
+        if future_sessions:
+            for session in future_sessions:
+                session_user = SessionUser(campaign=self.campaign, 
+                                        session=session,
+                                        user=self.user)
+                session_user.save()
 
 class CampaignNotes(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -82,15 +95,12 @@ class Session(models.Model):
         player_list = CampaignUser.objects.filter(campaign=self.campaign)
         session_user = SessionUser.objects.filter(campaign=self.campaign, 
                                                   session=self)
-        if session_user:
-            session_user.delete()
-        
-        for player in player_list:
-            session_user = SessionUser(campaign=self.campaign, 
-                                       session=self,
-                                       user=player.user)
-            session_user.save()
-
+        if not session_user:
+            for player in player_list:
+                session_user = SessionUser(campaign=self.campaign, 
+                                        session=self,
+                                        user=player.user)
+                session_user.save()
 
 
 
@@ -116,3 +126,4 @@ class SessionUser(models.Model):
             return "GM"
         else:
             return "Player"
+    
