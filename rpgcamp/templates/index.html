@@ -1,8 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-        <div class="row">
-        </div>
-
       <div class="row">
 {% if not request.user.is_authenticated %}
 <div class="jumbotron">
@@ -15,7 +12,6 @@
 {% else %}
 <div class="col-md-12"><h1>Suas Campanhas</h1>
 <div class="alert alert-warning alert-dismissible" role="alert" style="font-size: 14px;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><small><strong>O RPGCamp ainda está em alpha!</strong> Agradecemos o interesse e esperamos que seja útil em suas campanhas, porém esteja ciente que ainda está em estágio inicial de desenvolvimento. Não nos responsabilizamos por dados perdidos, site quebrado, mudanças repentinas, vazio existencial, espadas amaldiçoadas, portais interdimensionais ou uma sensação estranha de que você está sendo observado por um devorador de mentes. Não se preocupe com ele, é inofensivo.</small></div>
-
 </div>
 {% endif %}
 {% if request.user.is_authenticated and not campaign_list %}
@@ -26,22 +22,20 @@
   </p>
 </div>
 {% endif %}
+</div>
 
 
 
-      </div>
-
-
-
-
+{% if campaign_list %}
 <div class="row">
-{% for campaign in campaign_list %}
-
-        <div class="col-md-4 campaign-list">
+<div class="col-md-8 col-xs-12">
+  {% for campaign in campaign_list %}  
+  <div class="row">
+    <div class="col-md-12">
           <h2><a href="{% url 'view_campaign' campaign.campaign.slug %}"> {{ campaign.campaign.name }} </a></h2>
           <span class="label label-default">{{ campaign.campaign.system }}</span>
           <p>{{ campaign.campaign.description }}</p>
-          <p><h3>Mestre</h3>
+          <p><strong>Mestre - </strong>
             {% for p in campaign.campaign.dms %}    
               <a href="{% url 'view_profile' p.username %}">
                 {% if p.profile_pic %}  <img src="{{ p.profile_pic }}" height="30" width="30" class="img-circle"> {% endif %}
@@ -50,31 +44,35 @@
             {% endfor %}
           </p>
 
-          <p><h3>Jogadores</h3>
+          <p><strong>Jogadores - </strong>
             {% for p in campaign.campaign.players %}    
-              <p><a href="{% url 'view_profile' p.username %}">
+              <a href="{% url 'view_profile' p.username %}">
                 {% if p.profile_pic %}  <img src="{{ p.profile_pic }}" height="30" width="30" class="img-circle"> {% endif %}
                 {{ p.display_name }}
-                </a></p>
+                </a> 
             {% endfor %}
             {% if not campaign.campaign.players %}
             Nenhum jogador.
             {% endif %}
           </p>
           
-          <p><a class="btn btn-default" href="{% url 'view_campaign' campaign.campaign.slug %}" role="button">Acessar Campanha &raquo;</a></p>
-        </div>
+          
+      
 
+    </div> <!-- col -->
+  </div> <!--row-->
+  
 {% endfor %}
+</div>
 
-{% if campaign_list %}
-        <div class="col-md-4">
-          <h2>Nova Campanha</h2>
-          <p>As campanhas que você já participa não são o suficiente? Então clique no botão abaixo para criar uma nova campanha no RPGCamp!</p>
-          <p><a class="btn btn-success" href="{% url 'create_campaign' %}" role="button"><span class="glyphicon glyphicon-plus-sign
-"> </span> Criar Campanha &raquo;</a></p>
-        </div>
+
+<div class="col-md-4 col-xs-12">
+  <a class="btn btn-success btn-lg btn-block" href="{% url 'create_campaign' %}" role="button"><span class="glyphicon glyphicon-plus-sign"> </span> Criar Nova Campanha &raquo;</a>
+</div>
+
+
 {% endif %}   
+
 
 </div>
      
