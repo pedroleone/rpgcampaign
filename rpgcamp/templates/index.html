@@ -1,13 +1,34 @@
 {% extends "base.html" %}
 {% block content %}
         <div class="row">
-        <div class="col-md-12"><h1>RPGCamp</h1></div>
         </div>
 
       <div class="row">
-        <div class="col-xs-12">
-          <p>Bem vindo ao RPGCamp! Seu gerenciador de campanhas e sessões de jogo para você nunca mais ouvir "eu não sabia que dia era o jogo".</p>
-        </div>
+{% if not request.user.is_authenticated %}
+<div class="jumbotron">
+  <h1>RPGCamp</h1>
+  <p>O RPGCamp foi criado para facilitar a organização da sua campanha. Crie sua campanha, adicione seus jogadores e nunca mais escute "eu não sabia que tinha jogo" novamente!</p>
+  <p><a class="btn btn-primary btn-lg" href="{% url 'add_user' %}" role="button">Crie Sua Conta</a>
+  <a class="btn btn-default btn-lg" href="{% url 'login' %}" role="button">Entrar...</a>
+  </p>
+</div>
+{% else %}
+<div class="col-md-12"><h1>Suas Campanhas</h1>
+<div class="alert alert-warning alert-dismissible" role="alert" style="font-size: 14px;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><small><strong>O RPGCamp ainda está em alpha!</strong> Agradecemos o interesse e esperamos que seja útil em suas campanhas, porém esteja ciente que ainda está em estágio inicial de desenvolvimento. Não nos responsabilizamos por dados perdidos, site quebrado, mudanças repentinas, vazio existencial, espadas amaldiçoadas, portais interdimensionais ou uma sensação estranha de que você está sendo observado por um devorador de mentes. Não se preocupe com ele, é inofensivo.</small></div>
+
+</div>
+{% endif %}
+{% if request.user.is_authenticated and not campaign_list %}
+<div class="jumbotron">
+  <h2>Nenhuma Campanha</h2>
+  <p>Ops. Parece que você não possui nenhuma campanha. Peça ao seu mestre que o adicione à campanha, ou crie uma nova.</p>
+  <p><a class="btn btn-primary btn-lg" href="{% url 'create_campaign' %}" role="button">Criar Nova Campanha</a>
+  </p>
+</div>
+{% endif %}
+
+
+
       </div>
 
 

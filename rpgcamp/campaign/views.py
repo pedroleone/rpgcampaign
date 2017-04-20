@@ -21,8 +21,10 @@ def get_permission(request, campaign):
 
 
 def index(request):
+    print('view start',timezone.now())
     campaign_list = get_campaigns(request)
     context = { 'campaign_list': campaign_list }
+    print('view end',timezone.now())
     return render(request, 'index.html', context=context)
 
 
@@ -213,7 +215,7 @@ def edit_session(request, slug, session_id):
 
     context['campaign'] = campaign
     context['form'] = form
-    return render(request, 'session/edit_session.html', context=context)
+    return render(request, 'session/new_session.html', context=context)
 
 def session_participation(request, slug, session_id):
     context = { 'campaign_list': get_campaigns(request) }

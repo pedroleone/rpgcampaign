@@ -28,8 +28,12 @@ class SessionForm(forms.ModelForm):
             'local': 'Local do Jogo',
         }
         help_texts = {
-            'notes': 'Opcional. Você pode usar <a href="http://daringfireball.net/projects/markdown/">Markdown</a> para formatar o texto.',
-            'local': 'Opcional. Você pode usar <a href="http://daringfireball.net/projects/markdown/">Markdown</a> para formatar o texto.',
+            'notes': 'Opcional',
+            'local': 'Opcional',
+        }
+        widgets = {
+            'notes': forms.Textarea(attrs={'data-provide': 'markdown'}),
+            'local': forms.Textarea(attrs={'data-provide': 'markdown'}),
         }
 
 class ParticipationForm(forms.ModelForm):

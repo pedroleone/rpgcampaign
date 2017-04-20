@@ -9,6 +9,7 @@
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'style/sidebar.css' %}" >
 <link rel="stylesheet" href="{% static 'style/bootstrap-datetimepicker.min.css' %}" >
+<link rel="stylesheet" href="{% static 'style/bootstrap-markdown.min.css' %}" >
 {% endblock %}
 
 {% block campaign %}
@@ -25,6 +26,8 @@
 {% block scripts %}
 <script src="{% static 'js/moment-with-locales.min.js' %}"></script>
 <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-markdown.js' %}"></script>
+<script src="{% static 'js/marked.js' %}"></script>
 
 
 <script type="text/javascript">
