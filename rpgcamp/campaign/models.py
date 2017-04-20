@@ -13,7 +13,7 @@ class Campaign(models.Model):
     slug = models.SlugField(unique=True)
     date_created = models.DateField(auto_now_add=True)
     private = models.BooleanField(default=False)
-        
+    
 
     def save(self, *args, **kwargs):
         slug = slugify(self.name)
@@ -72,6 +72,8 @@ class CampaignUser(models.Model):
                                         session=session,
                                         user=self.user)
                 session_user.save()
+    
+    
 
 class CampaignNotes(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)

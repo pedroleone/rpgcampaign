@@ -36,7 +36,8 @@
           <span class="label label-default">{{ campaign.campaign.system }}</span>
           <p>{{ campaign.campaign.description }}</p>
           <p><strong>Mestre - </strong>
-            {% for p in campaign.campaign.dms %}    
+            {{campaign.campaign.get_dms}}
+            {% for p in campaign.campaign.get_dms.all %}    
               <a href="{% url 'view_profile' p.username %}">
                 {% if p.profile_pic %}  <img src="{{ p.profile_pic }}" height="30" width="30" class="img-circle"> {% endif %}
                 {{ p.display_name }} 

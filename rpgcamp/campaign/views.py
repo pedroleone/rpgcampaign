@@ -24,6 +24,8 @@ def index(request):
     print('view start',timezone.now())
     campaign_list = get_campaigns(request)
     context = { 'campaign_list': campaign_list }
+   
+
     print('view end',timezone.now())
     return render(request, 'index.html', context=context)
 
