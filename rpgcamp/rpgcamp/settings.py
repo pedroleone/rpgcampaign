@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'campaign.apps.CampaignConfig',    
     'users',
+    'forum.apps.ForumConfig'
 ]
 
 MIDDLEWARE = [

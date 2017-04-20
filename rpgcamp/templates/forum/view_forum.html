@@ -1,0 +1,57 @@
+{% extends "base_campaign.html" %}
+{% load crispy_forms_tags %}
+
+{% block menu-forum %}active{% endblock %}
+
+{% block campaign %}
+<h2>Tópicos de Sessões</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <td>Título</td>
+        <td>Data</td>
+        <td>Autor</td>
+        <td>Sessão</td>
+    </tr>
+    </thead>
+<tbody>
+{% for topic in topics_sessions %}
+<tr>
+    <td><a href="{% url 'view_topic' campaign.slug topic.id %}">{{ topic.title }}</a></td>
+    <td><small>{{ topic.published_date | date:"d\/m\/Y"}} {{ topic.published_date |time:"TIME_FORMAT"}}</small></td>
+    <td><img src="{{ topic.author.profile.get_profile_pic }}" height="30" width="30" class="img-circle"> 
+        <a href="{% url 'view_profile' topic.author.username %}">{{ topic.author.profile.display_name }}</a></td>
+    <td><a class="btn btn-info" href="{% url 'view_session' campaign.slug topic.linked_session.id%}">View</a> </td>
+</tr>    
+{% endfor %}
+</tbody>
+</table>
+
+
+<h2>Tópicos</h2>
+<a href="{% url 'new_topic' campaign.slug %}" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"> </span> Criar Novo Tópico</a>
+<table class="table">
+    <thead>
+    <tr>
+        <td>Título</td>
+        <td>Data</td>
+        <td>Autor</td>
+    </tr>
+    </thead>
+<tbody>
+{% for topic in topics %}
+<tr>
+    <td><a href="{% url 'view_topic' campaign.slug topic.id %}">{{ topic.title }}</a></td>
+    <td><small>{{ topic.published_date | date:"d\/m\/Y"}} {{ topic.published_date |time:"TIME_FORMAT"}}</small></td>
+    <td><img src="{{ topic.author.profile.get_profile_pic }}" height="30" width="30" class="img-circle"> 
+        <a href="{% url 'view_profile' topic.author.username %}">{{ topic.author.profile.display_name }}</a></td>
+</tr>    
+{% endfor %}
+</tbody>
+</table>
+
+
+
+
+{% endblock %}

@@ -39,5 +39,5 @@ class UserProfileNewForm(forms.Form):
 
         if password != password_confirmation:
             msg = 'Senha e Confirmação da senha não estão iguais. Confirme a digitação.'
-            self.add_error('password', msg)
+            self.add_error('password_confirmation', msg)
             
