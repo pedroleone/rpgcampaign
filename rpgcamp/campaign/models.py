@@ -9,7 +9,7 @@ from django.utils import timezone
 class Campaign(models.Model):
     name = models.CharField(max_length=50)
     system = models.CharField(max_length=50)
-    description = models.TextField(blank=True)
+    description = models.TextField(blank=True, max_length=500)
     slug = models.SlugField(unique=True)
     date_created = models.DateField(auto_now_add=True)
     private = models.BooleanField(default=False)
@@ -85,7 +85,10 @@ class Session(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     date = models.DateTimeField()    
     notes = models.TextField(blank=True)
-    local = models.TextField(blank=True)
+    local = models.TextField(blank=True )
+
+    def __str__(self):
+        return self.campaign.name
 
     class Meta:
         ordering = ["date"]

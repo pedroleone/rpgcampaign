@@ -21,3 +21,6 @@ class Profile(models.Model):
             return '/static/img/blank_profile_pic.png'
         else:
             return self.profile_pic.url
+
+    def __str__(self):
+        return self.display_name
