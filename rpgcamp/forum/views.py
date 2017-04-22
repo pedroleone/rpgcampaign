@@ -65,3 +65,21 @@ def new_topic(request, slug):
 
 def edit_topic(request, slug, topic_id):
     pass
+
+
+def new_topic_from_session(request, slug, session_id):
+    session = get_object_or_404(Session, id=session_id)
+    campaign = get_object_or_404(Campaign, slug=slug)
+    form = AddMessageSmallForm(request.POST or None)
+    if request.method=="POST":
+        if form.is_valid():
+            topic=Topic(author=request.user, campaign=campaign, title="Sessão "+str(session.date), linked_session=session)
+            topic.save()
+            message = TopicMessage(topic=topic, author=request.user,text=form.cleaned_data['message'])
+            message.save()
+            if request.POST.get('redirect') == 'main':
+                return HttpResponseRedirect(reverse('view_campaign', args=[campaign.slug]))    
+            else:
+                return HttpResponseRedirect(reverse('view_topic', args=[campaign.slug, topic.id]))
+    else:
+        return HttpResponse(status=500)

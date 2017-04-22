@@ -5,6 +5,12 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'style/sidebar.css' %}" >
+<link rel="stylesheet" href="{% static 'style/bootstrap-markdown.min.css' %}" >
+{% endblock %}
+
+
 {% block campaign %}
 
           <div class="col-md-9 col-sm-12">
@@ -81,15 +87,25 @@
 </div> <!-- row -->
 
 {% endfor %}
+<a class="btn btn-primary" role="button" data-toggle="collapse" href="#add-message">Adicionar Mensagem</a>
+<div class="collapse" id="add-message">
 <form method="POST" action="{% url 'view_topic' campaign.slug topic.id%}">
     {% csrf_token %}
     {{ form_message|crispy }}
     <input type="hidden" name="redirect" value="main">
     <button type="submit" class="btn btn-success btn-lg" name="action">Postar Mensagem</button>
 </form>
-
+</div>
 {%else%}
-Nenhum tópico!
+<a class="btn btn-primary" role="button" data-toggle="collapse" href="#new-topic">Adicionar Mensagem</a>
+<div class="collapse" id="new-topic">
+<form method="POST" action="{% url 'new_topic_from_session' campaign.slug next_session.id%}">
+    {% csrf_token %}
+    {{ form_message|crispy }}
+    <input type="hidden" name="redirect" value="main">
+    <button type="submit" class="btn btn-success btn-lg" name="action">Postar Mensagem</button>
+</form>
+</div>
 
 {%endif%}
 
@@ -143,7 +159,11 @@ Nenhum tópico!
 {% endblock %}
 
 
+
 {% block scripts %}
+<script src="{% static 'js/bootstrap-markdown.js' %}"></script>
+<script src="{% static 'js/marked.js' %}"></script>
+
 <script>
 $('#modal-confirm').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) 
