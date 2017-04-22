@@ -71,8 +71,12 @@
             <p>Nenhuma sessão marcada :( </p>
             {% endif %}
  
-{% if topic %}
+
+
+{% if next_session %}
+{% if topic%}
 <hr class="styled">
+<h3>Conversa da Sessão</h3>
 {% for message in topic.topicmessage_set.all %}
 <div class="row">
 <div class="message">
@@ -87,26 +91,30 @@
 </div> <!-- row -->
 
 {% endfor %}
+<div class="row"><div class="col-xs-12 text-right">
 <a class="btn btn-primary" role="button" data-toggle="collapse" href="#add-message">Adicionar Mensagem</a>
 <div class="collapse" id="add-message">
 <form method="POST" action="{% url 'view_topic' campaign.slug topic.id%}">
     {% csrf_token %}
-    {{ form_message|crispy }}
+    {{ form_message.message }}
     <input type="hidden" name="redirect" value="main">
     <button type="submit" class="btn btn-success btn-lg" name="action">Postar Mensagem</button>
 </form>
 </div>
+</div></div>
 {%else%}
-<a class="btn btn-primary" role="button" data-toggle="collapse" href="#new-topic">Adicionar Mensagem</a>
+<div class="row"><div class="col-xs-12 text-right">
+<a class="btn btn-primary" role="button" data-toggle="collapse" href="#new-topic">Iniciar Conversa</a>
 <div class="collapse" id="new-topic">
 <form method="POST" action="{% url 'new_topic_from_session' campaign.slug next_session.id%}">
     {% csrf_token %}
-    {{ form_message|crispy }}
+    {{ form_message.message }}
     <input type="hidden" name="redirect" value="main">
     <button type="submit" class="btn btn-success btn-lg" name="action">Postar Mensagem</button>
 </form>
 </div>
-
+</div></div>
+{%endif%}
 {%endif%}
 
  

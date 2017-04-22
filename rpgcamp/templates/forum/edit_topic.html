@@ -1,0 +1,28 @@
+{% extends "base_campaign.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+{% block menu-nova-sessao %}active{% endblock %}
+
+
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'style/sidebar.css' %}" >
+<link rel="stylesheet" href="{% static 'style/bootstrap-markdown.min.css' %}" >
+{% endblock %}
+
+{% block campaign %}
+    <h2>Editar Mensagem</h2>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success btn-lg" name="action">Salvar</button>
+    </form>
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'js/bootstrap-markdown.js' %}"></script>
+<script src="{% static 'js/marked.js' %}"></script>
+{% endblock %}

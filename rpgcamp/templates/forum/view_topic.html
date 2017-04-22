@@ -27,7 +27,7 @@ hr.styled {
  </style>   
 
 
-<h2>{{ topic.title }}</h2>
+<h2>{{ topic.get_title }}</h2>
 
 
 {% for message in topic.topicmessage_set.all %}
@@ -42,10 +42,14 @@ hr.styled {
         <small>{{ message.published_date | date:"d\/m\/Y"}}</small>
         <br>
         <small>{{ message.published_date |time:"TIME_FORMAT"}}</small>
+        {% if message.edited %}<br><small>Editado</small>{%endif%}
+        
   </div>
 </div>
 <div class="col-xs-12 col-md-9 message">
 {{ message.text | markdown | safe }}
+<br>
+{% if request.user == message.author or permission == 1%} <a href="{% url 'edit_message' campaign.slug topic.id message.id %}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a> {% endif %}
 </div>
 </div> <!-- message -->
 

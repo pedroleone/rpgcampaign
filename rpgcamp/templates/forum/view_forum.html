@@ -12,19 +12,28 @@
         <td>Título</td>
         <td>Data</td>
         <td>Autor</td>
+        <td>Qtde Msgs</td>
         <td>Sessão</td>
     </tr>
     </thead>
 <tbody>
 {% for topic in topics_sessions %}
 <tr>
-    <td><a href="{% url 'view_topic' campaign.slug topic.id %}">{{ topic.title }}</a></td>
-    <td><small>{{ topic.published_date | date:"d\/m\/Y"}} {{ topic.published_date |time:"TIME_FORMAT"}}</small></td>
+    <td><a href="{% url 'view_topic' campaign.slug topic.id %}">{{ topic.get_title }}</a></td>
+    <td><small>{{ topic.get_pubdate_short }}</small></td>
     <td><img src="{{ topic.author.profile.get_profile_pic }}" height="30" width="30" class="img-circle"> 
         <a href="{% url 'view_profile' topic.author.username %}">{{ topic.author.profile.display_name }}</a></td>
-    <td><a class="btn btn-info" href="{% url 'view_session' campaign.slug topic.linked_session.id%}">View</a> </td>
+    <td>{{ topic.total_messages }}
+    <td><a class="btn btn-default" href="{% url 'view_session' campaign.slug topic.linked_session.id%}"> <span class="glyphicon glyphicon-chevron-right"></span></a> </td>
 </tr>    
 {% endfor %}
+
+{% if not topics_sessions %}
+<tr>
+    <td colspan=5><em>Nenhum tópico de sessão</em></td>
+</tr>
+{%endif%}
+
 </tbody>
 </table>
 
@@ -37,17 +46,26 @@
         <td>Título</td>
         <td>Data</td>
         <td>Autor</td>
+        <td>Qtde Msgs</td>
     </tr>
     </thead>
 <tbody>
 {% for topic in topics %}
 <tr>
-    <td><a href="{% url 'view_topic' campaign.slug topic.id %}">{{ topic.title }}</a></td>
-    <td><small>{{ topic.published_date | date:"d\/m\/Y"}} {{ topic.published_date |time:"TIME_FORMAT"}}</small></td>
+    <td><a href="{% url 'view_topic' campaign.slug topic.id %}">{{ topic.get_title }}</a></td>
+    <td><small>{{ topic.get_pubdate_short }}</small></td>
     <td><img src="{{ topic.author.profile.get_profile_pic }}" height="30" width="30" class="img-circle"> 
         <a href="{% url 'view_profile' topic.author.username %}">{{ topic.author.profile.display_name }}</a></td>
+    <td>{{ topic.total_messages }}
 </tr>    
 {% endfor %}
+
+{% if not topics %}
+<tr>
+    <td colspan=4><em>Nenhum tópico</em></td>
+</tr>
+{%endif%}
+
 </tbody>
 </table>
 

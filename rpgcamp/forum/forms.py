@@ -5,7 +5,7 @@ class AddTopicForm(forms.Form):
     message = forms.CharField(label='Mensagem', widget=forms.Textarea(attrs={'data-provide': 'markdown', 'rows': '20'}))
 
 class AddMessageForm(forms.Form):
-    message = forms.CharField(label='Mensagem', widget=forms.Textarea(attrs={'data-provide': 'markdown', 'rows': '20'}))
+    message = forms.CharField(label='Mensagem', widget=forms.Textarea(attrs={'data-provide': 'markdown', 'rows': '6'}))
 
 class AddMessageSmallForm(forms.Form):
     message = forms.CharField(label='Mensagem', widget=forms.Textarea(attrs={'data-provide': 'markdown', 'rows': '4'}))

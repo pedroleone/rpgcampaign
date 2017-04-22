@@ -193,6 +193,13 @@ def view_session(request, slug, session_id):
     context['permission'] = get_permission(request, campaign)
     context['campaign'] = campaign
     context['session'] = session
+
+    topic = Topic.objects.filter(linked_session=session).first()
+    context['topic'] = topic
+    form_message = AddMessageSmallForm()
+    context['form_message'] = form_message
+
+
     return render(request, 'session/view_session.html', context=context)
     
 

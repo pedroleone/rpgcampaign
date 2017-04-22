@@ -37,6 +37,8 @@ def view_topic(request, slug, topic_id):
             message.save()
             if request.POST.get('redirect') == 'main':
                 return HttpResponseRedirect(reverse('view_campaign', args=[campaign.slug]))    
+            elif request.POST.get('redirect') == 'session':
+                return HttpResponseRedirect(reverse('view_session', args=[campaign.slug, topic.linked_session.id]))    
             else:
                 return HttpResponseRedirect(reverse('view_topic', args=[campaign.slug, topic.id]))
     return render(request, 'forum/view_topic.html', context=context)
@@ -66,6 +68,56 @@ def new_topic(request, slug):
 def edit_topic(request, slug, topic_id):
     pass
 
+def edit_message(request, slug, topic_id, message_id):
+    context = { 'campaign_list': get_campaigns(request) }
+    campaign = get_object_or_404(Campaign, slug=slug)
+    context['permission'] = get_permission(request, campaign)
+    user = get_object_or_404(User, username=request.user)
+    context['campaign'] = campaign
+    topic = get_object_or_404(Topic, id=topic_id)
+    message = get_object_or_404(TopicMessage, id=message_id)
+    first_message=TopicMessage.objects.filter(topic=topic).first()
+    if message == first_message:
+        data = {
+            'title': topic.title,
+            'message': message.text
+        }
+        form = AddTopicForm(request.POST or data)
+        if request.method == "POST":
+            if form.is_valid():
+                print(topic, message, ' <<< ')
+                print(form.cleaned_data)
+                topic.title = form.cleaned_data['title']
+                message.text = form.cleaned_data['message']
+                message.edited = True 
+                message.save()
+                topic.save()
+                print(topic, message)
+            if request.POST.get('redirect') == 'main':
+                return HttpResponseRedirect(reverse('view_campaign', args=[campaign.slug]))    
+            elif request.POST.get('redirect') == 'session':
+                return HttpResponseRedirect(reverse('view_session', args=[campaign.slug, topic.linked_session.id]))    
+            else:
+                return HttpResponseRedirect(reverse('view_topic', args=[campaign.slug, topic.id]))        
+        else:
+            context['form'] = form
+            return render(request, 'forum/edit_topic.html', context)
+    else:
+        form = AddMessageForm(request.POST or {'message': message.text})
+        if request.method == "POST":
+            if form.is_valid():
+                message.text = form.cleaned_data['message']
+                message.edited = True 
+                message.save()
+            if request.POST.get('redirect') == 'main':
+                return HttpResponseRedirect(reverse('view_campaign', args=[campaign.slug]))    
+            elif request.POST.get('redirect') == 'session':
+                return HttpResponseRedirect(reverse('view_session', args=[campaign.slug, topic.linked_session.id]))    
+            else:
+                return HttpResponseRedirect(reverse('view_topic', args=[campaign.slug, topic.id]))        
+        else:
+            context['form'] = form
+            return render(request, 'forum/edit_topic.html', context)
 
 def new_topic_from_session(request, slug, session_id):
     session = get_object_or_404(Session, id=session_id)
@@ -79,6 +131,8 @@ def new_topic_from_session(request, slug, session_id):
             message.save()
             if request.POST.get('redirect') == 'main':
                 return HttpResponseRedirect(reverse('view_campaign', args=[campaign.slug]))    
+            elif request.POST.get('redirect') == 'session':
+                return HttpResponseRedirect(reverse('view_session', args=[campaign.slug, session.id]))    
             else:
                 return HttpResponseRedirect(reverse('view_topic', args=[campaign.slug, topic.id]))
     else:

@@ -18,13 +18,31 @@ class Topic(models.Model):
     class Meta:
         ordering = ["-published_date"]
 
+    def get_pubdate_short(self):
+        return self.published_date.strftime('%x %X')
+
+    def get_title(self):
+        if self.linked_session:
+            return 'Tópico da Sessão ' + self.linked_session.date.strftime('%x %X')
+        else:
+            return self.title
+    
+    def total_messages(self):
+        return TopicMessage.objects.filter(topic=self).count()
+
 class TopicMessage(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     published_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
+    edited = models.BooleanField(default=False)
 
+    def get_pubdate_short(self):
+        return self.published_date.strftime('%x %X')
+
+    def get_moddate_short(self):
+        return self.modified_date.strftime('%x %X')
 
 
     def __str__(self):
