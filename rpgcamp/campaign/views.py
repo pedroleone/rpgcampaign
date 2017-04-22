@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from campaign.forms import *
 from campaign.models import *
-
+from forum.forms import *
+from forum.models import *
 from django.utils import timezone
 from datetime import datetime
 
@@ -57,10 +58,17 @@ def view_campaign(request, slug):
     if session:
         next_session = session[0]
         context['next_session'] = next_session
+        topic = Topic.objects.filter(linked_session=next_session).first()
+        context['topic'] = topic
+    
     context['campaign'] = campaign
     context['permission'] = permission
     form = ParticipationForm()
     context['form'] = form
+
+    form_message = AddMessageSmallForm()
+    context['form_message'] = form_message
+
     return render(request, 'campaign/campaign.html', context=context)
     
 
@@ -267,3 +275,4 @@ def session_participation(request, slug, session_id):
     
 
     return render(request, 'session/edit_participation.html', context=context)
+

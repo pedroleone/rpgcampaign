@@ -23,9 +23,6 @@ hr.styled {
   background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
 }
 
-.author {
-    padding-bottom: 10px;
-}
 
  </style>   
 
@@ -36,7 +33,7 @@ hr.styled {
 {% for message in topic.topicmessage_set.all %}
 <div class="row">
 <div class="message">
-<div class="col-xs-12 col-md-2 author">
+<div class="col-xs-12 col-md-3 author text-center">
   <div class="well">
         <img src="{{ message.author.profile.get_profile_pic }}" height="70" width="70" class="img-circle"> 
         <br> 
@@ -47,7 +44,7 @@ hr.styled {
         <small>{{ message.published_date |time:"TIME_FORMAT"}}</small>
   </div>
 </div>
-<div class="col-xs-12 col-md-10 message">
+<div class="col-xs-12 col-md-9 message">
 {{ message.text | markdown | safe }}
 </div>
 </div> <!-- message -->

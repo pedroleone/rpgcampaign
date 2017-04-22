@@ -5,6 +5,7 @@ from django.urls import reverse
 from campaign.models import *
 from forum.models import *
 from forum.forms import *
+from forum.models import *
 from campaign.views import get_campaigns, get_permission
 
 
@@ -34,7 +35,10 @@ def view_topic(request, slug, topic_id):
         if form.is_valid():
             message = TopicMessage(topic=topic, author=request.user,text=form.cleaned_data['message'])
             message.save()
-            return HttpResponseRedirect(reverse('view_topic', args=[campaign.slug, topic.id]))
+            if request.POST.get('redirect') == 'main':
+                return HttpResponseRedirect(reverse('view_campaign', args=[campaign.slug]))    
+            else:
+                return HttpResponseRedirect(reverse('view_topic', args=[campaign.slug, topic.id]))
     return render(request, 'forum/view_topic.html', context=context)
 
 @login_required(login_url='/login/')

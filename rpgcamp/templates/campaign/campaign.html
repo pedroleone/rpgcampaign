@@ -57,15 +57,43 @@
 {% if player.note %}
 <div class="col-md-12 col-xs-12"> <strong>Observação:</strong> {{player.note}}</div>
 {%endif%}
+
 </div>
 
             {%endfor%}
-            
-
-
             {% else %}
             <p>Nenhuma sessão marcada :( </p>
             {% endif %}
+ 
+{% if topic %}
+<hr class="styled">
+{% for message in topic.topicmessage_set.all %}
+<div class="row">
+<div class="message">
+<div class="col-xs-12">
+<img src="{{ message.author.profile.get_profile_pic }}" height="20" width="20" class="img-circle"> 
+{{ message.author.profile.display_name }} <small>({{ message.published_date | date:"d\/m\/Y"}} {{ message.published_date |time:"TIME_FORMAT"}})</small>
+{{ message.text | markdown | safe }}
+
+</div>
+</div> <!-- message -->
+
+</div> <!-- row -->
+
+{% endfor %}
+<form method="POST" action="{% url 'view_topic' campaign.slug topic.id%}">
+    {% csrf_token %}
+    {{ form_message|crispy }}
+    <input type="hidden" name="redirect" value="main">
+    <button type="submit" class="btn btn-success btn-lg" name="action">Postar Mensagem</button>
+</form>
+
+{%else%}
+Nenhum tópico!
+
+{%endif%}
+
+ 
           </div>
           <div class="col-md-3 col-sm-12">
           <p><h3>Mestre</h3>

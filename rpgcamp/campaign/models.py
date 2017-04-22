@@ -48,6 +48,7 @@ class Campaign(models.Model):
     def __str__(self):
         return self.name
 
+
 class CampaignUser(models.Model):
     USER_TYPE = ( (1,'Game Master'), 
                   (2, 'Player') )
