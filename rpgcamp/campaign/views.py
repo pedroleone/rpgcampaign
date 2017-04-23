@@ -46,7 +46,7 @@ def create_campaign(request):
     context['form'] = form
     return render(request, 'campaign/create_campaign.html', context)
     
-
+@login_required(login_url='/login/')
 def view_campaign(request, slug):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
