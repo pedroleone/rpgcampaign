@@ -48,4 +48,19 @@ class ParticipationForm(forms.ModelForm):
             'note': 'Opcional',
         }
 
+class HouseRulesForm(forms.ModelForm):
+    class Meta:
+        model = HouseRules
+        fields = ['text', 'gm_only_text']
+        labels = {
+            'text': 'House Rules',
+            'gm_only_text': 'Texto Secreto'
+        }
+        help_texts = {
+            'gm_only_text': 'Tudo que você digitar aqui não poderá ser visto pelos jogadores. Você pode utilizar como esboço, ou com anotações para o futuro, por exemplo.'
+        }
+        widgets = {
+            'text': forms.Textarea(attrs={'data-provide': 'markdown'}),
+            'gm_only_text': forms.Textarea(attrs={'data-provide': 'markdown'}),
+        }
 

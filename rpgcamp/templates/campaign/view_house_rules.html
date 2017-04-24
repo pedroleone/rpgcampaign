@@ -1,0 +1,55 @@
+{% extends "base_campaign.html" %}
+{% load crispy_forms_tags %}
+{% load markdownify %}
+
+{% block menu-houserules %}active{% endblock %}
+
+{% load staticfiles %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'style/sidebar.css' %}" >
+{% endblock %}
+
+
+{% block campaign %}
+<div class="row">
+<div class="col-md-12">
+<h2>House Rules</h2>
+{% if not campaign.houserules %}
+
+{% if permission == 1 %}
+<p>Você ainda não cadastrou nenhuma house rule.</p>
+<p>Você pode utilizar este espaço para cadastrar novas regras, mudanças nas regras do sistema, ou quaisquer outras informações que sejam importantes para os seus jogadores.</p>
+<p><a class="btn btn-default btn-lg" href="{% url 'edit_houserules' campaign.slug %}" ><span class="glyphicon glyphicon-file"></span> Criar House Rules</a></p>
+{%else%}
+<p>O GM da campanha ainda não cadastoru nenhuma house rule.</p>
+{%endif%}
+
+
+
+{% else %}
+
+{% if permission == 1 %}
+<p><a class="btn btn-default btn-lg" href="{% url 'edit_houserules' campaign.slug %}" ><span class="glyphicon glyphicon-file"></span> Alterar House Rules</a></p>
+{%endif%}
+<div class="house-rules">
+{{ campaign.houserules.text | markdown | safe }}
+</div>
+{%endif%}
+{% if permission == 1 %}
+<hr>
+<div class="house-rules">
+<h2>Texto Secreto</h2>
+{{ campaign.houserules.gm_only_text | markdown | safe }}
+</div>
+{% endif %}
+</div></div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".house-rules img").addClass("img-responsive");
+});
+</script>
+{% endblock %}

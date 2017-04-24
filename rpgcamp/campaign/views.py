@@ -283,3 +283,42 @@ def session_participation(request, slug, session_id):
 
     return render(request, 'session/edit_participation.html', context=context)
 
+
+def view_houserules(request, slug):
+    context = { 'campaign_list': get_campaigns(request) }
+    campaign = get_object_or_404(Campaign, slug=slug)
+    context['permission'] = get_permission(request, campaign)
+    context['campaign'] = campaign
+    return render(request, 'campaign/view_house_rules.html', context)
+
+def edit_houserules(request, slug):
+    context = { 'campaign_list': get_campaigns(request) }
+    campaign = get_object_or_404(Campaign, slug=slug)
+    permission = get_permission(request, campaign)
+    context['permission'] = permission
+    context['campaign'] = campaign
+    actual_house_rules = HouseRules.objects.filter(campaign=campaign).first()
+    if actual_house_rules:
+        form = HouseRulesForm(instance=actual_house_rules)
+    else:
+        form = HouseRulesForm(request.POST or None)
+    context['form'] = form
+    if request.method == 'POST':
+        print('post')
+        form = HouseRulesForm(request.POST)
+        if permission == 2:
+            return render(request, 'denied.html', context=context)
+        if form.is_valid():
+            print('é valido')
+            if actual_house_rules:
+                actual_house_rules.text = form.cleaned_data['text']
+                actual_house_rules.gm_only_text = form.cleaned_data['gm_only_text']
+                actual_house_rules.save()
+            else:
+                house_rule = HouseRules(campaign=campaign, 
+                                        text=form.cleaned_data['text'],
+                                        gm_only_text=form.cleaned_data['gm_only_text'])
+                house_rule.save()
+            return HttpResponseRedirect(reverse('view_houserules', args=[slug]))
+    else:
+        return render(request, 'campaign/edit_houserules.html', context=context)

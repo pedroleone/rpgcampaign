@@ -89,8 +89,6 @@ def edit_message(request, slug, topic_id, message_id):
         form = AddTopicForm(request.POST or data)
         if request.method == "POST":
             if form.is_valid():
-                print(topic, message, ' <<< ')
-                print(form.cleaned_data)
                 topic.title = form.cleaned_data['title']
                 message.text = form.cleaned_data['message']
                 message.edited = True 

@@ -11,6 +11,9 @@ urlpatterns = [
     url(r'^c/(?P<slug>[\w-]+)/sessions/(?P<session_id>[\w-]+)/edit/$', views.edit_session, name='edit_session'),
     url(r'^c/(?P<slug>[\w-]+)/sessions/(?P<session_id>[\w-]+)/participation/$', views.session_participation, name='session_participation'),
 
+    url(r'^c/(?P<slug>[\w-]+)/houserules/$', views.view_houserules, name='view_houserules'),
+    url(r'^c/(?P<slug>[\w-]+)/houserules/edit/$', views.edit_houserules, name='edit_houserules'),
+
 
     url(r'^c/(?P<slug>[\w-]+)/players/$', views.players, name='players'),
     url(r'^c/(?P<slug>[\w-]+)/players/delete/$', views.delete_player, name='delete_player'),

@@ -84,6 +84,8 @@ class CampaignNotes(models.Model):
     modified_date = models.DateTimeField(auto_now=False)
 
 
+
+
 class Session(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     date = models.DateTimeField()    
@@ -163,4 +165,11 @@ class SessionUser(models.Model):
             return "GM"
         else:
             return "Player"
+    
+class HouseRules(models.Model):
+    campaign = models.OneToOneField(Campaign, on_delete=models.CASCADE)
+    text = models.TextField(blank=True)
+    gm_only_text = models.TextField(blank=True)
+    published_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
     
