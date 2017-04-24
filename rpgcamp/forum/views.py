@@ -136,4 +136,11 @@ def new_topic_from_session(request, slug, session_id):
             else:
                 return HttpResponseRedirect(reverse('view_topic', args=[campaign.slug, topic.id]))
     else:
-        return HttpResponse(status=500)
+        context = { 'campaign_list': get_campaigns(request) }
+        campaign = get_object_or_404(Campaign, slug=slug)
+        context['permission'] = get_permission(request, campaign)
+        user = get_object_or_404(User, username=request.user)
+        context['campaign'] = campaign
+        context['form'] = form
+        context['session'] = session
+        return render(request, 'forum/new_topic_from_session.html', context)

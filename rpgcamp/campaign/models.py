@@ -56,7 +56,7 @@ class CampaignUser(models.Model):
     user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     permission = models.IntegerField(choices=USER_TYPE, default=2)
-
+ 
     def __str__(self):
         return self.campaign.name
 
@@ -88,13 +88,23 @@ class Session(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     date = models.DateTimeField()    
     notes = models.TextField(blank=True)
-    local = models.TextField(blank=True )
+    local = models.TextField(blank=True)
 
     def __str__(self):
         return self.campaign.name
 
     class Meta:
         ordering = ["date"]
+
+    def get_date_short(self):
+        return self.date.strftime('%x %X')
+
+    
+    def get_participant_total(self):
+        total = SessionUser.objects.filter(session=self).count()
+        present = SessionUser.objects.filter(session=self,status=3).count()
+        return str(present)+'/'+str(total)
+
 
     def save(self, *args, **kwargs):
         super(Session, self).save(*args, **kwargs)
@@ -122,7 +132,28 @@ class SessionUser(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     status = models.IntegerField(choices=OPTIONS, default=1)
     note = models.CharField(max_length=100, blank=True)
-    
+
+    def get_participation(self):
+        if timezone.now() <= self.session.date:
+            if self.status == 1:
+                return 'Não Informado'
+            elif self.status == 2:
+                return 'Não Vai Participar'
+            elif self.status == 3:
+                return 'Vai Participar'
+            elif self.status == 4:
+                return 'Não Sabe'
+        else:
+            if self.status == 1:
+                return 'Não Informado'
+            elif self.status == 2:
+                return 'Não Participou'
+            elif self.status == 3:
+                return 'Participou'
+            elif self.status == 4:
+                return 'Não Sabe'
+            
+
     @property
     def player_type(self):
         find = CampaignUser.objects.filter(user=self.user, campaign=self.campaign).first()

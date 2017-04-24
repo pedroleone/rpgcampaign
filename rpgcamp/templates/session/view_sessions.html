@@ -1,31 +1,97 @@
 {% extends "base_campaign.html" %}
 {% load crispy_forms_tags %}
-
+{% load staticfiles %}
 {% block menu-sessoes %}active{% endblock %}
 
 {% block campaign %}
 
 {% if next_session %}
 <h2>Próxima Sessão</h2>
-<ul><li><a href="{% url 'view_session' campaign.slug next_session.id %}">{{ next_session.date|date:"l\, j \d\e E \d\e Y " }} às {{next_session.date|time:"TIME_FORMAT" }}</a></li></ul>
+<table class="table table-striped">
+<thead>
+    <tr>
+        <td>Data</td>
+        <td>Participantes</td>
+        <td>Tópico</td>
+        <td>Diário</td>
+    </tr>
+</thead>
+<tbody>
+<tr>
+    <td><a href="{% url 'view_session' campaign.slug next_session.id %}">{{ next_session.date|date:"l\, j \d\e E \d\e Y " }} às {{next_session.date|time:"TIME_FORMAT" }}</a></td>
+    <td>{{next_session.get_participant_total}}</td>
+    <td>{% if next_session.topic_set.count > 0 %}
+            <a class="btn btn-default" href="{% url 'view_topic' campaign.slug next_session.topic_set.all.0.id %}"><img src="{% static 'icons/conversation.svg' %}" height="20" width="20"> Ver ({{ next_session.topic_set.all.0.total_messages }})</a>    
+        {% else %}
+            <a class="btn btn-default" href="{% url 'new_topic_from_session' campaign.slug next_session.id %}"><img src="{% static 'icons/conversation.svg' %}" height="20" width="20"> Criar </a>    
+        {%endif%}
+
+        
+    </td>
+    <td><a class="btn btn-default disabled" href="#"><img src="{% static 'icons/scroll-unfurled.svg' %}" height="20" width="20"> </a></td>    
+</table>
 {% endif %}
 
 {% if future_sessions %}
 <h2>Sessões Futuras</h2>
-<ul>
-{% for s in future_sessions %}
-<li><a href="{% url 'view_session' campaign.slug s.id %}">{{ s.date|date:"l\, j \d\e E \d\e Y " }} às {{s.date|time:"TIME_FORMAT" }}</a></li>
+<table class="table table-striped">
+<thead>
+    <tr>
+        <td>Data</td>
+        <td>Participantes</td>
+        <td>Tópico</td>
+        <td>Diário</td>
+    </tr>
+</thead>
+<tbody>
+{% for s in old_sessions %}
+<tr>
+    <td><a href="{% url 'view_session' campaign.slug s.id %}">{{ s.get_date_short }}</a></td>
+    <td>{{s.get_participant_total}}</td>
+    <td>{% if s.topic_set.count > 0 %}
+            <a class="btn btn-default" href="{% url 'view_topic' campaign.slug s.topic_set.all.0.id %}"><img src="{% static 'icons/conversation.svg' %}" height="20" width="20"> Ver ({{ s.topic_set.all.0.total_messages }})</a>    
+        {% else %}
+            <a class="btn btn-default" href="{% url 'new_topic_from_session' campaign.slug s.id %}"><img src="{% static 'icons/conversation.svg' %}" height="20" width="20"> Criar </a>    
+        {%endif%}
+
+        
+    </td>
+    <td><a class="btn btn-default disabled" href="#"><img src="{% static 'icons/scroll-unfurled.svg' %}" height="20" width="20"> </a></td>
+</tr>
 {% endfor %}
-</ul>
+</tbody>
+</table>
 {% endif %}
 
 {% if old_sessions %}
 <h2>Sessões Passadas</h2>
-<ul>
+<table class="table table-striped">
+<thead>
+    <tr>
+        <td>Data</td>
+        <td>Participantes</td>
+        <td>Tópico</td>
+        <td>Diário</td>
+    </tr>
+</thead>
+<tbody>
 {% for s in old_sessions %}
-<li><a href="{% url 'view_session' campaign.slug s.id %}">{{ s.date|date:"l\, j \d\e E \d\e Y " }} às {{s.date|time:"TIME_FORMAT" }}</a></li>
+<tr>
+    <td><a href="{% url 'view_session' campaign.slug s.id %}">{{ s.get_date_short }}</a></td>
+    <td>{{s.get_participant_total}}</td>
+    <td>{% if s.topic_set.count > 0 %}
+            <a class="btn btn-default" href="{% url 'view_topic' campaign.slug s.topic_set.all.0.id %}"><img src="{% static 'icons/conversation.svg' %}" height="20" width="20"> Ver ({{ s.topic_set.all.0.total_messages }})</a>    
+        {% else %}
+            <a class="btn btn-default" href="{% url 'new_topic_from_session' campaign.slug s.id %}"><img src="{% static 'icons/conversation.svg' %}" height="20" width="20"> Criar </a>    
+        {%endif%}
+
+        
+    </td>
+    <td><a class="btn btn-default disabled" href="#"><img src="{% static 'icons/scroll-unfurled.svg' %}" height="20" width="20"> </a></td>
+</tr>
 {% endfor %}
-</ul>
+</tbody>
+</table>
 {% endif %}
 
 {% if not next_session and not future_sessions and not old_sessions %}

@@ -42,7 +42,7 @@
 {{ player.user.profile.display_name }} 
 </a>
 </div>
-<div class="col-md-3 col-xs-6 text-center">{{ player.get_status_display}} </div>
+<div class="col-md-3 col-xs-6 text-center">{{ player.get_participation}} </div>
 <div class="col-md-6 col-xs-12">
 {% if permission == 1 or player.user == request.user%}
 <form method="POST" action="participation/">
