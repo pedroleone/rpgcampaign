@@ -24,7 +24,7 @@ class Topic(models.Model):
 
     def get_title(self):
         if self.linked_session:
-            return 'Tópico da Sessão ' + self.linked_session.date.strftime('%x %X')
+            return 'Tópico da Sessão ' + timezone.localtime(self.linked_session.date).strftime('%x %X')
         else:
             return self.title
     
