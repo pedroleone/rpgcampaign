@@ -19,7 +19,7 @@ class Topic(models.Model):
         ordering = ["-published_date"]
 
     def get_pubdate_short(self):
-        return self.published_date.strftime('%x %X')
+        return timezone.localtime(self.published_date).strftime('%x %X')
 
     def get_title(self):
         if self.linked_session:
@@ -39,10 +39,10 @@ class TopicMessage(models.Model):
     edited = models.BooleanField(default=False)
 
     def get_pubdate_short(self):
-        return self.published_date.strftime('%x %X')
+        return timezone.localtime(self.published_date).strftime('%x %X')
 
     def get_moddate_short(self):
-        return self.modified_date.strftime('%x %X')
+        return timezone.localtime(self.modified_date).strftime('%x %X')
 
 
     def __str__(self):

@@ -97,7 +97,7 @@ class Session(models.Model):
         ordering = ["date"]
 
     def get_date_short(self):
-        return self.date.strftime('%x %X')
+        return timezone.localtime(self.date).strftime('%x %X')
 
     
     def get_participant_total(self):
