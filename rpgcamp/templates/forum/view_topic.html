@@ -32,7 +32,6 @@ hr.styled {
 
 {% for message in topic.topicmessage_set.all %}
 <div class="row">
-<div class="message">
 <div class="col-xs-12 col-md-3 author text-center">
   <div class="well">
         <img src="{{ message.author.profile.get_profile_pic }}" height="70" width="70" class="img-circle"> 
@@ -50,7 +49,6 @@ hr.styled {
 {{ message.text | markdown | safe }}
 <br>
 {% if request.user == message.author or permission == 1%} <a href="{% url 'edit_message' campaign.slug topic.id message.id %}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a> {% endif %}
-</div>
 </div> <!-- message -->
 
 </div> <!-- row -->
@@ -71,4 +69,9 @@ hr.styled {
 {% block scripts %}
 <script src="{% static 'js/bootstrap-markdown.js' %}"></script>
 <script src="{% static 'js/marked.js' %}"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".message img").addClass("img-responsive");
+});
+</script>
 {% endblock %}
