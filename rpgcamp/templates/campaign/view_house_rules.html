@@ -38,10 +38,12 @@
 {%endif%}
 {% if permission == 1 %}
 <hr>
+{% if campaign.houserules.gm_only_text %}
 <div class="house-rules">
 <h2>Texto Secreto</h2>
 {{ campaign.houserules.gm_only_text | markdown | safe }}
 </div>
+{% endif %}
 {% endif %}
 </div></div>
 {% endblock %}
