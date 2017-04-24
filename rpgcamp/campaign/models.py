@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from itertools import count
 import datetime
 from django.utils import timezone
+import bleach
 
 class Campaign(models.Model):
     name = models.CharField(max_length=50)
@@ -23,6 +24,8 @@ class Campaign(models.Model):
             slug = "%s-%d" % (slug, x)
         
         self.slug = slug
+        self.description = bleach.clean(self.description)
+
         super(Campaign, self).save(*args, **kwargs)
     
     def dms(self):
@@ -82,8 +85,11 @@ class CampaignNotes(models.Model):
     text = models.TextField()
     published_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=False)
+    title = models.CharField(max_length=150, default="")
 
-
+    def save(self, *args, **kwargs):
+        self.text = bleach.clean(self.text)
+        super(CampaignNotes, self).save(*args, **kwargs)
 
 
 class Session(models.Model):
@@ -109,6 +115,8 @@ class Session(models.Model):
 
 
     def save(self, *args, **kwargs):
+        self.notes = bleach.clean(self.notes)
+        self.local = bleach.clean(self.local)
         super(Session, self).save(*args, **kwargs)
         player_list = CampaignUser.objects.filter(campaign=self.campaign)
         session_user = SessionUser.objects.filter(campaign=self.campaign, 
@@ -172,4 +180,20 @@ class HouseRules(models.Model):
     gm_only_text = models.TextField(blank=True)
     published_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
-    
+
+    def save(self, *args, **kwargs):
+        self.text = bleach.clean(self.text)
+        super(HouseRules, self).save(*args, **kwargs)
+
+class GameReport(models.Model):
+    linked_session = models.ForeignKey(Session, on_delete=models.CASCADE, null=True,blank=True)
+    title = models.CharField(max_length=250)
+    published_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+    text = models.TextField(blank=True)
+    gm_only_text = models.TextField(blank=True)
+
+    def save(self, *args, **kwargs):
+        self.text = bleach.clean(self.text)
+        self.gm_only_text = bleach.clean(self.gm_only_text)
+        super(GameReport, self).save(*args, **kwargs)    

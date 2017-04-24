@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from campaign.models import Session, Campaign
 from django.utils import timezone
+import bleach
 
 class Topic(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -48,3 +49,7 @@ class TopicMessage(models.Model):
 
     def __str__(self):
         return self.text
+
+    def save(self, *args, **kwargs):
+        self.text = bleach.clean(self.text)
+        super(TopicMessage, self).save(*args, **kwargs)           
