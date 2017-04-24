@@ -71,11 +71,15 @@ def edit_topic(request, slug, topic_id):
 def edit_message(request, slug, topic_id, message_id):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
-    context['permission'] = get_permission(request, campaign)
+    permission = get_permission(request, campaign)
+    context['permission'] = permission
     user = get_object_or_404(User, username=request.user)
     context['campaign'] = campaign
     topic = get_object_or_404(Topic, id=topic_id)
     message = get_object_or_404(TopicMessage, id=message_id)
+    if (message.author != request.user) and permission == 2:
+         return render(request, 'denied.html', context=context)
+
     first_message=TopicMessage.objects.filter(topic=topic).first()
     if message == first_message:
         data = {
