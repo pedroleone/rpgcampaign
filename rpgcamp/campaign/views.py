@@ -331,7 +331,7 @@ def view_campaign_report(request, slug):
     context['campaign'] = campaign
     initial_report = GameReport.objects.filter(campaign=campaign, initial=True).first()
     context['initial_report'] = initial_report
-    sessions = Session.objects.filter(campaign=campaign)
+    sessions = Session.objects.filter(campaign=campaign, date__lt=timezone.now())
     context['sessions'] = sessions
     
     return render(request, 'campaign/campaign_report.html', context)
@@ -342,7 +342,7 @@ def view_session_report(request, slug, session_id):
     permission = get_permission(request, campaign)
     context['permission'] = permission
     context['campaign'] = campaign
-    session = get_object_or_404(Session, id=session_id, date__lt=timezone.now())
+    session = get_object_or_404(Session, id=session_id)
     context['session'] = session
 
     initial_data = GameReport.objects.filter(campaign=campaign, linked_session=session).first()

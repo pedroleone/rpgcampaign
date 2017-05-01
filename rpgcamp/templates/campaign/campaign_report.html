@@ -32,9 +32,9 @@
 </p>
 <a href="{% url 'view_session_report' campaign.slug session.id %}" style="float:right;" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
 {% if session.topic_set.count > 0%}
-<a href="{% url 'view_topic' campaign.slug session.topic_set.all.0.id %}" style="float:right;" class="btn btn-default btn-sm"><img src="{% static 'icons/conversation.svg' %}" height="18" width="18"></a>
+<a href="{% url 'view_topic' campaign.slug session.topic_set.all.0.id %}" style="float:right;" class="btn btn-default btn-sm"><img src="{% static 'icons/conversation.svg' %}" height="17" width="17"></a>
 {% else %}
-<a href="{% url 'new_topic_from_session' campaign.slug session.id %}" style="float:right;" class="btn btn-default btn-sm"><img src="{% static 'icons/conversation.svg' %}" height="18" width="18"></a>
+<a href="{% url 'new_topic_from_session' campaign.slug session.id %}" style="float:right;" class="btn btn-default btn-sm"><img src="{% static 'icons/conversation.svg' %}" height="17" width="17"></a>
 
 {% endif %}
 
