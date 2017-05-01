@@ -64,3 +64,27 @@ class HouseRulesForm(forms.ModelForm):
             'gm_only_text': forms.Textarea(attrs={'data-provide': 'markdown'}),
         }
 
+class GameReportSessionPlayer(forms.ModelForm):
+    class Meta:
+        model = GameReport
+        fields = ['text']
+        labels = {
+            'text': 'Reporte da Sessão'
+        }
+        widgets = {
+            'text': forms.Textarea(attrs={'data-provide': 'markdown'}),
+        }
+
+class GameReportSessionGM(forms.ModelForm):
+    class Meta:
+        model = GameReport
+        fields = ['text', 'gm_only_text']
+        labels = {
+            'text': 'Reporte da Sessão',
+            'gm_only_text': 'Texto Secreto'            
+        }
+        widgets = {
+            'text': forms.Textarea(attrs={'data-provide': 'markdown'}),
+            'gm_only_text': forms.Textarea(attrs={'data-provide': 'markdown'}),
+        }
+

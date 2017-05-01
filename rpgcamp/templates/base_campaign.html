@@ -47,6 +47,11 @@
   <li><a class="{% block menu-nova-sessao %}{% endblock %}" href="{% url 'new_session' campaign.slug %}"><img src="{% static 'icons/read.svg' %}" height="24" width="24"> Marcar Nova Sessão</a></li>
   {% endif %}
   <li><a class="{% block menu-houserules %}{%endblock%}"href="{% url 'view_houserules' campaign.slug %}" ><img src="{% static 'icons/stabbed-note.svg' %}" height="24" width="24"> House Rules</a></li>
+  <li><a class="{% block menu-gamereport %}{%endblock%}"href="{% url 'view_campaign_report' campaign.slug %}" ><img src="{% static 'icons/scroll-unfurled.svg' %}" height="24" width="24"> Reportes de Jogo</a></li>
+
+
+
+
    <!--
     <li><a href="#"><img src="{% static 'icons/brutal-helm.svg' %}" height="24" width="24"> Personagens</a></li>
     <li><a href="#"><img src="{% static 'icons/farmer.svg' %}" height="24" width="24"> NPCs</a></li>

@@ -99,14 +99,16 @@ class Session(models.Model):
     local = models.TextField(blank=True)
 
     def __str__(self):
-        return self.campaign.name
+        return self.campaign.name + ' ' + str(self.date)
 
     class Meta:
         ordering = ["date"]
 
     def get_date_short(self):
-        return timezone.localtime(self.date).strftime('%x %X')
+        return timezone.localtime(self.date).strftime('%d/%m/%y')
 
+    def get_date_hour_short(self):
+        return timezone.localtime(self.date).strftime('%d/%m/%y %H:%M')
     
     def get_participant_total(self):
         total = SessionUser.objects.filter(session=self).count()
@@ -186,14 +188,17 @@ class HouseRules(models.Model):
         super(HouseRules, self).save(*args, **kwargs)
 
 class GameReport(models.Model):
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     linked_session = models.ForeignKey(Session, on_delete=models.CASCADE, null=True,blank=True)
-    title = models.CharField(max_length=250)
     published_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
     text = models.TextField(blank=True)
     gm_only_text = models.TextField(blank=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    initial = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         self.text = bleach.clean(self.text)
         self.gm_only_text = bleach.clean(self.gm_only_text)
         super(GameReport, self).save(*args, **kwargs)    
+    

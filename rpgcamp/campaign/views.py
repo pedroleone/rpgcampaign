@@ -22,12 +22,8 @@ def get_permission(request, campaign):
 
 
 def index(request):
-    print('view start',timezone.now())
     campaign_list = get_campaigns(request)
     context = { 'campaign_list': campaign_list }
-   
-
-    print('view end',timezone.now())
     return render(request, 'index.html', context=context)
 
 
@@ -214,7 +210,6 @@ def edit_session(request, slug, session_id):
         'notes': session.notes
     }
     form = SessionForm(initial_data)
-    print(request.POST)
     if request.method == "POST":
         method = request.POST.get('action')
         if method == 'delete':
@@ -304,12 +299,10 @@ def edit_houserules(request, slug):
         form = HouseRulesForm(request.POST or None)
     context['form'] = form
     if request.method == 'POST':
-        print('post')
         form = HouseRulesForm(request.POST)
         if permission == 2:
             return render(request, 'denied.html', context=context)
         if form.is_valid():
-            print('é valido')
             if actual_house_rules:
                 actual_house_rules.text = form.cleaned_data['text']
                 actual_house_rules.gm_only_text = form.cleaned_data['gm_only_text']
@@ -322,3 +315,65 @@ def edit_houserules(request, slug):
             return HttpResponseRedirect(reverse('view_houserules', args=[slug]))
     else:
         return render(request, 'campaign/edit_houserules.html', context=context)
+
+def edit_session_report(request, slug, session_id=None): 
+    pass 
+
+
+def view_report(request, slug, report_id):
+    pass
+
+def view_campaign_report(request, slug):
+    context = { 'campaign_list': get_campaigns(request) }
+    campaign = get_object_or_404(Campaign, slug=slug)
+    permission = get_permission(request, campaign)
+    context['permission'] = permission
+    context['campaign'] = campaign
+    initial_report = GameReport.objects.filter(campaign=campaign, initial=True).first()
+    context['initial_report'] = initial_report
+    sessions = Session.objects.filter(campaign=campaign)
+    context['sessions'] = sessions
+    
+    return render(request, 'campaign/campaign_report.html', context)
+    
+def view_session_report(request, slug, session_id): 
+    context = { 'campaign_list': get_campaigns(request) }
+    campaign = get_object_or_404(Campaign, slug=slug)
+    permission = get_permission(request, campaign)
+    context['permission'] = permission
+    context['campaign'] = campaign
+    session = get_object_or_404(Session, id=session_id, date__lt=timezone.now())
+    context['session'] = session
+
+    initial_data = GameReport.objects.filter(campaign=campaign, linked_session=session).first()
+    if permission == 2:
+        if initial_data:
+            form = GameReportSessionPlayer(instance=initial_data)
+        else:
+            form = GameReportSessionPlayer()
+    else: 
+        if initial_data:
+            form = GameReportSessionGM(instance=initial_data)
+        else:
+            form = GameReportSessionGM()
+    
+    if request.method == "POST":
+        if permission == 2:
+            form = GameReportSessionPlayer(request.POST)
+        else:
+            form = GameReportSessionGM(request.POST)
+        if form.is_valid():
+            if initial_data:
+                initial_data.text = form.cleaned_data['text']
+                if permission == 1:
+                    initial_data.gm_only_text=form.cleaned_data['gm_only_text']
+                initial_data.save()
+            else:
+                report = GameReport(campaign=campaign, linked_session=session, text=form.cleaned_data['text'], author=request.user)
+                if permission == 1:
+                    report.gm_only_text=form.cleaned_data['gm_only_text']
+                report.save()
+        return HttpResponseRedirect(reverse('view_campaign_report', args=[slug]))
+
+    context['form'] = form
+    return render(request, 'campaign/session_report.html', context)

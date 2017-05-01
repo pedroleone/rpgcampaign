@@ -1,0 +1,59 @@
+{% extends "base_campaign.html" %}
+{% load crispy_forms_tags %}
+{% load markdownify %}
+
+{% block menu-gamereport %}active{% endblock %}
+
+{% load staticfiles %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'style/sidebar.css' %}" >
+{% endblock %}
+
+
+{% block campaign %}
+<div class="row">
+<div class="col-md-12">
+{% if initial_report %}
+<h2>Reporte Inicial </h2>
+<div class="report">
+{{ initial_report.text | markdown | safe }}
+</div>
+{%endif%}
+
+
+{% for session in sessions %}
+<h3>Sessão de {{ session.get_date_short }}</h2>
+<p>Participantes: 
+{% for p in session.sessionuser_set.all %}    
+{% if p.status == 3 %}<a href="{% url 'view_profile' p.user %}"><img src="{{ p.user.profile.get_profile_pic }}" height="25" width="25" class="img-circle"></a>{% endif %}
+{% endfor %}    
+
+</p>
+<a href="{% url 'view_session_report' campaign.slug session.id %}" style="float:right;" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
+{% if session.topic_set.count > 0%}
+<a href="{% url 'view_topic' campaign.slug session.topic_set.all.0.id %}" style="float:right;" class="btn btn-default btn-sm"><img src="{% static 'icons/conversation.svg' %}" height="18" width="18"></a>
+{% else %}
+<a href="{% url 'new_topic_from_session' campaign.slug session.id %}" style="float:right;" class="btn btn-default btn-sm"><img src="{% static 'icons/conversation.svg' %}" height="18" width="18"></a>
+
+{% endif %}
+
+{% if session.gamereport_set.all.count > 0 %}
+{{ session.gamereport_set.all.0.text | markdown | safe }}
+{% else %}
+<small>Nenhum reporte para esta sessão.</small>
+{%endif%}
+
+{%endfor%}
+
+</div></div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".report img").addClass("img-responsive");
+        $(".report table").addClass("table");
+});
+</script>
+{% endblock %}

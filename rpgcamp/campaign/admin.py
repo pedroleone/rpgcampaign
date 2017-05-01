@@ -30,9 +30,15 @@ class HouseRulesAdmin(admin.ModelAdmin):
         'id', 'campaign', 'text', 'gm_only_text', 'published_date', 'modified_date'
     )
 
+class GameReportAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'linked_session', 'published_date', 'modified_date', 'text', 'gm_only_text','author', 'campaign'
+    )
+    
+
 admin.site.register(Campaign,CampaignAdmin)
 admin.site.register(CampaignUser, CampaignUserAdmin)
 admin.site.register(Session, SessionAdmin)
 admin.site.register(SessionUser, SessionUserAdmin)
 admin.site.register(HouseRules, HouseRulesAdmin)
-
+admin.site.register(GameReport, GameReportAdmin)
