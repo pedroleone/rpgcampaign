@@ -19,8 +19,9 @@ urlpatterns = [
     url(r'^c/(?P<slug>[\w-]+)/players/delete/$', views.delete_player, name='delete_player'),
 
     url(r'^c/(?P<slug>[\w-]+)/report/$', views.view_campaign_report, name='view_campaign_report'),
-    url(r'^c/(?P<slug>[\w-]+)/report/session/(?P<session_id>[\w-]+)/$', views.view_session_report, name='view_session_report'),
-    #url(r'^c/(?P<slug>[\w-]+)/report/(?P<report_id>[\w-]+)/$', views.view_session, name='view_session'),    
+    url(r'^c/(?P<slug>[\w-]+)/report/edit/session/(?P<session_id>[\w-]+)/$', views.edit_session_report, name='edit_session_report'),
+    url(r'^c/(?P<slug>[\w-]+)/report/view/session/(?P<session_id>[\w-]+)/$', views.view_session_report, name='view_session_report'),    
+
 
     url(r'^$', views.index, name='index'),
 ]

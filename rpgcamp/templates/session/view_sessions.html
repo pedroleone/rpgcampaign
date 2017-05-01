@@ -83,7 +83,12 @@
 
         
     </td>
-<td><a class="btn btn-default" href="{% url 'view_session_report' campaign.slug s.id %}"><img src="{% static 'icons/scroll-unfurled.svg' %}" height="20" width="20"> </a></td>    
+<td>
+    {% if s.gamereport_set.count == 0 %}
+    <a class="btn btn-default" href="{% url 'edit_session_report' campaign.slug s.id %}"><img src="{% static 'icons/scroll-unfurled.svg' %}" height="20" width="20"> </a></td>    
+    {% else %}
+    <a class="btn btn-default" href="{% url 'view_session_report' campaign.slug s.id %}"><img src="{% static 'icons/scroll-unfurled.svg' %}" height="20" width="20"> </a></td>    
+    {%endif%}
 </tr>
 {% endfor %}
 </tbody>

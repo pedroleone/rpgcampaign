@@ -1,0 +1,27 @@
+{% extends "base_campaign.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load markdownify %}
+
+{% block menu-gamereport %}active{% endblock %}
+
+
+
+{% block campaign %}
+<h2>Reporte da Sessão de {{ session.get_date_short }}</h2>
+<div class="report">
+
+{{ session.gamereport_set.all.0.text | markdown | safe }}
+<a href="{% url 'edit_session_report' campaign.slug session.id %}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".report img").addClass("img-responsive");
+        $(".report table").addClass("table");
+});
+</script>
+{% endblock %}

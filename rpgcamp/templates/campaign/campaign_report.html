@@ -30,7 +30,7 @@
 {% endfor %}    
 
 </p>
-<a href="{% url 'view_session_report' campaign.slug session.id %}" style="float:right;" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
+<a href="{% url 'edit_session_report' campaign.slug session.id %}" style="float:right;" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
 {% if session.topic_set.count > 0%}
 <a href="{% url 'view_topic' campaign.slug session.topic_set.all.0.id %}" style="float:right;" class="btn btn-default btn-sm"><img src="{% static 'icons/conversation.svg' %}" height="17" width="17"></a>
 {% else %}
@@ -38,7 +38,7 @@
 
 {% endif %}
 
-{% if session.gamereport_set.all.count > 0 %}
+{% if session.gamereport_set.all.count > 0 and session.gamereport_set.all.0.text|length > 0 %}
 {{ session.gamereport_set.all.0.text | markdown | safe }}
 {% else %}
 <small>Nenhum reporte para esta sessão.</small>

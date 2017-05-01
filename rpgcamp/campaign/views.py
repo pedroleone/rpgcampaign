@@ -319,10 +319,6 @@ def edit_houserules(request, slug):
     else:
         return render(request, 'campaign/edit_houserules.html', context=context)
 
-def edit_session_report(request, slug, session_id=None): 
-    pass 
-
-
 def view_report(request, slug, report_id):
     pass
 
@@ -339,7 +335,7 @@ def view_campaign_report(request, slug):
     
     return render(request, 'campaign/campaign_report.html', context)
     
-def view_session_report(request, slug, session_id): 
+def edit_session_report(request, slug, session_id): 
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
     permission = get_permission(request, campaign)
@@ -380,3 +376,13 @@ def view_session_report(request, slug, session_id):
 
     context['form'] = form
     return render(request, 'campaign/session_report.html', context)
+
+def view_session_report(request, slug, session_id): 
+    context = { 'campaign_list': get_campaigns(request) }
+    campaign = get_object_or_404(Campaign, slug=slug)
+    permission = get_permission(request, campaign)
+    context['permission'] = permission
+    context['campaign'] = campaign
+    session = get_object_or_404(Session, id=session_id)
+    context['session'] = session
+    return render(request, 'campaign/view_session_report.html', context)
