@@ -28,7 +28,7 @@
 
         
     </td>
-    <td><a class="btn btn-default" href="{% url 'view_session_report' campaign.slug session.id %}"><img src="{% static 'icons/scroll-unfurled.svg' %}" height="20" width="20"> </a></td>    
+    <td><a class="btn btn-default" href="{% url 'view_session_report' campaign.slug next_session.id %}"><img src="{% static 'icons/scroll-unfurled.svg' %}" height="20" width="20"> </a></td>    
 </table>
 {% endif %}
 
@@ -56,7 +56,7 @@
 
         
     </td>
-    <td><a class="btn btn-default" href="{% url 'view_session_report' campaign.slug session.id %}"><img src="{% static 'icons/scroll-unfurled.svg' %}" height="20" width="20"> </a></td>    
+    <td><a class="btn btn-default" href="{% url 'view_session_report' campaign.slug s.id %}"><img src="{% static 'icons/scroll-unfurled.svg' %}" height="20" width="20"> </a></td>    
 </tr>
 {% endfor %}
 </tbody>
