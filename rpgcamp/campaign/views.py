@@ -14,7 +14,10 @@ def get_campaigns(request):
         return CampaignUser.objects.filter(user=request.user)
 
 def get_permission(request, campaign):
-    permission = CampaignUser.objects.filter(campaign=campaign, user=request.user)
+    if request.user.is_authenticated:
+        permission = CampaignUser.objects.filter(campaign=campaign, user=request.user)
+    else:
+        return None
     if permission:
         return permission.first().permission
     else:
