@@ -4,7 +4,7 @@ from django import forms
 class CampaignForm(forms.ModelForm):
     class Meta:
         model = Campaign 
-        fields = ['name','system','description','private']
+        fields = ['name','system','description']
         labels = {
             'name': 'Nome da Campanha',
             'system': 'Sistema Utilizado',

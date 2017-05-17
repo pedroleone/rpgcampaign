@@ -24,6 +24,22 @@ def get_permission(request, campaign):
         return None
 
 
+def user_in_campaign(function):
+    def wrap(request, *args, **kwargs):
+        campaign = get_object_or_404(Campaign, slug=kwargs['slug']) 
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect('/login/')
+        else:
+            user = CampaignUser.objects.filter(campaign=campaign, user=request.user)
+            if not user:
+                context = { 'campaign_list': get_campaigns(request) }
+                return render(request, 'campaign/campaign_denied.html', context=context)
+            else:
+                return function(request, *args, **kwargs)
+    wrap.__doc__ = function.__doc__
+    wrap.__name__ = function.__name__
+    return wrap                            
+
 def index(request):
     campaign_list = get_campaigns(request)
     context = { 'campaign_list': campaign_list }
@@ -46,13 +62,11 @@ def create_campaign(request):
     return render(request, 'campaign/create_campaign.html', context)
     
 @login_required(login_url='/login/')
+@user_in_campaign
 def view_campaign(request, slug):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
     permission = get_permission(request, campaign)
-    if campaign.private is True:
-        if not permission:
-            return render(request, 'campaign_denied.html', context=context)
     session = Session.objects.filter(campaign=campaign, date__gte=timezone.now())
     if session:
         next_session = session[0]
@@ -74,6 +88,7 @@ def view_campaign(request, slug):
 
 from django.contrib.auth.models import User
 @login_required(login_url='/login/')
+@user_in_campaign
 def players(request, slug): 
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
@@ -120,6 +135,7 @@ def players(request, slug):
 
 
 @login_required(login_url='/login/')
+@user_in_campaign
 def delete_player(request, slug):
     campaign = get_object_or_404(Campaign, id=request.POST.get('delete_campaign_id'))
     user_id = request.POST.get('delete_user_id')
@@ -141,6 +157,7 @@ def delete_player(request, slug):
 
 
 @login_required(login_url='/login/')
+@user_in_campaign
 def new_session(request, slug):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
@@ -161,7 +178,8 @@ def new_session(request, slug):
     return render(request, 'session/new_session.html', context=context)
 
 
-@login_required(login_url='/login/')            
+@login_required(login_url='/login/')   
+@user_in_campaign         
 def view_sessions(request, slug):
 
     context = { 'campaign_list': get_campaigns(request) }
@@ -183,6 +201,7 @@ def view_sessions(request, slug):
 
 
 @login_required(login_url='/login/')
+@user_in_campaign
 def view_session(request, slug, session_id):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
@@ -203,6 +222,7 @@ def view_session(request, slug, session_id):
     
 
 @login_required(login_url='/login/')
+@user_in_campaign
 def edit_session(request, slug, session_id):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
@@ -232,6 +252,8 @@ def edit_session(request, slug, session_id):
     context['form'] = form
     return render(request, 'session/new_session.html', context=context)
 
+@login_required(login_url='/login/')
+@user_in_campaign
 def session_participation(request, slug, session_id):
     context = { 'campaign_list': get_campaigns(request) }
     action = request.POST.get('action')
@@ -272,7 +294,6 @@ def session_participation(request, slug, session_id):
 
     if redirect:
         if next_page=="main":
-            #HttpResponseRedirect(reverse('view_campaign', args=[slug])) 
             return HttpResponseRedirect(reverse('view_campaign', args=[slug])) 
         else:
             return HttpResponseRedirect(reverse('view_session', args=[slug, session.id])) 
@@ -281,7 +302,8 @@ def session_participation(request, slug, session_id):
 
     return render(request, 'session/edit_participation.html', context=context)
 
-
+@login_required(login_url='/login/')
+@user_in_campaign
 def view_houserules(request, slug):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
@@ -289,6 +311,8 @@ def view_houserules(request, slug):
     context['campaign'] = campaign
     return render(request, 'campaign/view_house_rules.html', context)
 
+@login_required(login_url='/login/')
+@user_in_campaign
 def edit_houserules(request, slug):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
@@ -322,6 +346,8 @@ def edit_houserules(request, slug):
 def view_report(request, slug, report_id):
     pass
 
+@login_required(login_url='/login/')
+@user_in_campaign
 def view_campaign_report(request, slug):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
@@ -334,7 +360,9 @@ def view_campaign_report(request, slug):
     context['sessions'] = sessions
     
     return render(request, 'campaign/campaign_report.html', context)
-    
+
+@login_required(login_url='/login/')
+@user_in_campaign
 def edit_session_report(request, slug, session_id): 
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
@@ -377,6 +405,8 @@ def edit_session_report(request, slug, session_id):
     context['form'] = form
     return render(request, 'campaign/session_report.html', context)
 
+@login_required(login_url='/login/')
+@user_in_campaign
 def view_session_report(request, slug, session_id): 
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)

@@ -13,7 +13,7 @@ class Campaign(models.Model):
     description = models.TextField(blank=True, max_length=500)
     slug = models.SlugField(unique=True)
     date_created = models.DateField(auto_now_add=True)
-    private = models.BooleanField(default=False)
+    private = models.BooleanField(default=True)
     
 
     def save(self, *args, **kwargs):

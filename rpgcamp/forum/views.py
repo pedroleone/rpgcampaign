@@ -6,10 +6,11 @@ from campaign.models import *
 from forum.models import *
 from forum.forms import *
 from forum.models import *
-from campaign.views import get_campaigns, get_permission
+from campaign.views import get_campaigns, get_permission, user_in_campaign
 
 
 @login_required(login_url='/login/')
+@user_in_campaign
 def view_forum(request, slug):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
@@ -22,6 +23,7 @@ def view_forum(request, slug):
     return render(request, 'forum/view_forum.html', context=context)
 
 @login_required(login_url='/login/')
+@user_in_campaign
 def view_topic(request, slug, topic_id):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
@@ -44,6 +46,7 @@ def view_topic(request, slug, topic_id):
     return render(request, 'forum/view_topic.html', context=context)
 
 @login_required(login_url='/login/')
+@user_in_campaign
 def new_topic(request, slug):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
@@ -68,6 +71,8 @@ def new_topic(request, slug):
 def edit_topic(request, slug, topic_id):
     pass
 
+@login_required(login_url='/login/')
+@user_in_campaign
 def edit_message(request, slug, topic_id, message_id):
     context = { 'campaign_list': get_campaigns(request) }
     campaign = get_object_or_404(Campaign, slug=slug)
@@ -121,6 +126,8 @@ def edit_message(request, slug, topic_id, message_id):
             context['form'] = form
             return render(request, 'forum/edit_topic.html', context)
 
+@login_required(login_url='/login/')
+@user_in_campaign
 def new_topic_from_session(request, slug, session_id):
     session = get_object_or_404(Session, id=session_id)
     campaign = get_object_or_404(Campaign, slug=slug)

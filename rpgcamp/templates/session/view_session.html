@@ -4,6 +4,7 @@
 {% block menu-sessoes %}active{% endblock %}
 {% load crispy_forms_tags %}
 {% load staticfiles %}
+{% load markdownify %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'style/sidebar.css' %}" >
@@ -114,6 +115,11 @@
 
 </div> <!-- row -->
 
+<div class="row">
+    <div class="col-md-12 report">
+    
+    </div>
+</div>
 {% endfor %}
 <div class="row"><div class="col-xs-12 text-right">
 <a class="btn btn-primary" role="button" data-toggle="collapse" href="#add-message">Adicionar Mensagem</a>
